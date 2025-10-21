@@ -29,10 +29,9 @@ const items = [
 
 export default function Testimonials() {
   return (
-    <section id="testimonials" className="w-full snap-start py-20">
+    <section id="gallery" className="w-full snap-start py-20">
       <div className="max-w-[1200px] mx-auto px-6">
-        <h2 className="text-3xl font-serif mb-4 text-center">What our clients say</h2>
-        <p className="text-center max-w-[800px] mx-auto mb-10 text-black/70">"Exceptional service, beautiful execution."</p>
+        <h2 className="text-3xl font-serif mb-6 text-center">Gallery</h2>
 
         <Masonry
           items={items}
