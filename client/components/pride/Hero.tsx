@@ -4,15 +4,6 @@ import {
   useSectionScrollProgress,
 } from "@/hooks/use-scroll";
 
-const IMAGES = {
-  layer1:
-    "https://images.pexels.com/photos/14636319/pexels-photo-14636319.jpeg?auto=compress&cs=tinysrgb&w=1600",
-  layer2:
-    "https://images.pexels.com/photos/11570131/pexels-photo-11570131.jpeg?auto=compress&cs=tinysrgb&w=1600",
-  layer3:
-    "https://images.pexels.com/photos/6405768/pexels-photo-6405768.jpeg?auto=compress&cs=tinysrgb&w=1600",
-};
-
 export default function Hero() {
   const ref = useRef<HTMLDivElement>(null);
   const progress = useSectionScrollProgress(ref);
