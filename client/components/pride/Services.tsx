@@ -51,7 +51,17 @@ export default function Services() {
   );
 }
 
-function ServiceCard({ title, desc, img, index }: { title: string; desc: string; img: string; index: number }) {
+function ServiceCard({
+  title,
+  desc,
+  img,
+  index,
+}: {
+  title: string;
+  desc: string;
+  img: string;
+  index: number;
+}) {
   const ref = useRef<HTMLDivElement>(null);
   const { inView, entry } = useInView(ref, { threshold: 0.2 });
   const reduced = usePrefersReducedMotion();
@@ -66,7 +76,8 @@ function ServiceCard({ title, desc, img, index }: { title: string; desc: string;
       const vh = window.innerHeight;
       const visible = Math.min(Math.max(vh - rect.top, 0), rect.height + vh);
       const p = Math.min(1, Math.max(0, visible / (rect.height + vh)));
-      if (bg) bg.style.transform = `translateY(${(-30 * p).toFixed(2)}px) scale3d(${1 + p * 0.05}, ${1 + p * 0.05}, 1)`;
+      if (bg)
+        bg.style.transform = `translateY(${(-30 * p).toFixed(2)}px) scale3d(${1 + p * 0.05}, ${1 + p * 0.05}, 1)`;
     };
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
@@ -77,7 +88,9 @@ function ServiceCard({ title, desc, img, index }: { title: string; desc: string;
     <div
       ref={ref}
       className={`relative min-h-[500px] rounded-2xl overflow-hidden shadow-sm bg-white transform transition duration-500 will-change-transform ${
-        inView ? "opacity-100 translate-y-0 scale-100" : "opacity-0 translate-y-10 scale-[0.98]"
+        inView
+          ? "opacity-100 translate-y-0 scale-100"
+          : "opacity-0 translate-y-10 scale-[0.98]"
       }`}
       style={{ transitionDelay: `${index * 150}ms` }}
     >

@@ -21,7 +21,8 @@ export function usePageScrollProgress() {
       ticking.current = true;
       requestAnimationFrame(() => {
         const scrollTop = window.scrollY;
-        const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+        const docHeight =
+          document.documentElement.scrollHeight - window.innerHeight;
         const p = docHeight > 0 ? scrollTop / docHeight : 0;
         setProgress(Math.min(1, Math.max(0, p)));
         ticking.current = false;
@@ -38,7 +39,10 @@ export function usePageScrollProgress() {
   return progress;
 }
 
-export function useSectionScrollProgress(ref: React.RefObject<HTMLElement>, extraHeight = 0) {
+export function useSectionScrollProgress(
+  ref: React.RefObject<HTMLElement>,
+  extraHeight = 0,
+) {
   const [progress, setProgress] = useState(0);
   const ticking = useRef(false);
   useEffect(() => {
@@ -70,7 +74,7 @@ export function useSectionScrollProgress(ref: React.RefObject<HTMLElement>, extr
 
 export function useInView<T extends Element = Element>(
   ref: React.RefObject<T>,
-  options: IntersectionObserverInit = { threshold: 0.2 }
+  options: IntersectionObserverInit = { threshold: 0.2 },
 ) {
   const [inView, setInView] = useState(false);
   const [entry, setEntry] = useState<IntersectionObserverEntry | null>(null);
@@ -84,6 +88,11 @@ export function useInView<T extends Element = Element>(
     }, options);
     obs.observe(el);
     return () => obs.disconnect();
-  }, [ref, options.root, options.rootMargin, JSON.stringify(options.threshold)]);
+  }, [
+    ref,
+    options.root,
+    options.rootMargin,
+    JSON.stringify(options.threshold),
+  ]);
   return { inView, entry };
 }

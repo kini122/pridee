@@ -1,10 +1,16 @@
 import { useEffect, useRef, useState } from "react";
-import { usePrefersReducedMotion, useSectionScrollProgress } from "@/hooks/use-scroll";
+import {
+  usePrefersReducedMotion,
+  useSectionScrollProgress,
+} from "@/hooks/use-scroll";
 
 const IMAGES = {
-  layer1: "https://images.pexels.com/photos/14636319/pexels-photo-14636319.jpeg?auto=compress&cs=tinysrgb&w=1600",
-  layer2: "https://images.pexels.com/photos/11570131/pexels-photo-11570131.jpeg?auto=compress&cs=tinysrgb&w=1600",
-  layer3: "https://images.pexels.com/photos/6405768/pexels-photo-6405768.jpeg?auto=compress&cs=tinysrgb&w=1600",
+  layer1:
+    "https://images.pexels.com/photos/14636319/pexels-photo-14636319.jpeg?auto=compress&cs=tinysrgb&w=1600",
+  layer2:
+    "https://images.pexels.com/photos/11570131/pexels-photo-11570131.jpeg?auto=compress&cs=tinysrgb&w=1600",
+  layer3:
+    "https://images.pexels.com/photos/6405768/pexels-photo-6405768.jpeg?auto=compress&cs=tinysrgb&w=1600",
 };
 
 export default function Hero() {
@@ -32,7 +38,10 @@ export default function Hero() {
       aria-label="From Vision to Unforgettable Reality"
     >
       {/* Parallax layers */}
-      <div aria-hidden className="pointer-events-none absolute inset-0 will-change-transform">
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 will-change-transform"
+      >
         <img
           src={IMAGES.layer1}
           alt="Corporate conference hall"
@@ -73,7 +82,9 @@ export default function Hero() {
           >
             From Vision to Unforgettable Reality
           </h1>
-          <div className={`flex items-center gap-4 ${mounted ? "animate-[blur-in_0.8s_ease-out_0.3s_forwards] opacity-0" : ""}`}>
+          <div
+            className={`flex items-center gap-4 ${mounted ? "animate-[blur-in_0.8s_ease-out_0.3s_forwards] opacity-0" : ""}`}
+          >
             <a
               href="#contact"
               className="inline-flex items-center gap-2 rounded-full bg-black text-white px-6 py-3 text-[16px] font-medium transition-transform duration-300 hover:scale-[1.05] shadow-sm"
