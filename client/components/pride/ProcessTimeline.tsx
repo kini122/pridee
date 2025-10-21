@@ -105,16 +105,17 @@ export default function ProcessTimeline() {
   );
 
   return (
-    <section
-      id="process"
-      className="bg-soft py-[80px] px-[40px] min-h-[400vh] snap-start"
-    >
+    <section id="process" className="relative py-[80px] px-[40px] min-h-[400vh] snap-start">
+      <div aria-hidden className="pointer-events-none absolute inset-0">
+        <video className="absolute inset-0 w-full h-full object-cover" src="https://www.pexels.com/download/video/2432400/" autoPlay muted loop playsInline />
+        <div className="absolute inset-0 bg-black/60" aria-hidden />
+      </div>
       <div className="max-w-[1200px] mx-auto">
         <div className="text-center mb-[100px]">
-          <h2 className="text-[clamp(28px,4.5vw,64px)] font-serif">
+          <h2 className="text-[clamp(28px,4.5vw,64px)] font-serif text-white">
             Our Process
           </h2>
-          <p className="text-black/60 mt-2">
+          <p className="text-white/80 mt-2">
             Six steps to extraordinary events
           </p>
         </div>
@@ -126,15 +127,8 @@ export default function ProcessTimeline() {
           {/* Left sticky nav */}
           <aside className="lg:col-span-4 relative lg:sticky lg:top-[20vh] self-start pr-[60px]">
             <div className="relative">
-              <div
-                className="absolute left-[23px] top-0 bottom-0 w-[2px] bg-black/10"
-                aria-hidden
-              />
-              <div
-                className="absolute left-[23px] top-0 w-[2px] bg-black transition-all"
-                style={{ height: `${progressHeight}%` }}
-                aria-hidden
-              />
+              <div className="absolute left-[23px] top-0 bottom-0 w-[2px] bg-white/10" aria-hidden />
+              <div className="absolute left-[23px] top-0 w-[2px] bg-white transition-all" style={{ height: `${progressHeight}%` }} aria-hidden />
               <ul className="relative z-10">
                 {STEPS.map((s, i) => (
                   <li
@@ -147,12 +141,12 @@ export default function ProcessTimeline() {
                     }
                   >
                     <div
-                      className={`w-12 h-12 rounded-full grid place-items-center border-2 transition-all ${i <= active ? "bg-black text-white border-black scale-100" : "bg-white text-black border-black scale-90"}`}
+                      className={`w-12 h-12 rounded-full grid place-items-center border-2 transition-all ${i <= active ? "bg-white text-black border-white scale-100" : "bg-white/10 text-white border-white/20 scale-90"}`}
                     >
                       {s.num}
                     </div>
                     <div
-                      className={`ml-5 text-[20px] transition-colors ${i <= active ? "text-black" : "text-black/40"}`}
+                      className={`ml-5 text-[20px] transition-colors ${i <= active ? "text-white" : "text-white/60"}`}
                     >
                       {s.step}
                     </div>
@@ -175,21 +169,18 @@ export default function ProcessTimeline() {
                 <div
                   className={`transition-all duration-700 ${i <= active ? "opacity-100 translate-y-0" : "opacity-0 translate-y-5"}`}
                 >
-                  <div className="uppercase text-[14px] tracking-[1.4px] text-black/40 mb-4">
+                  <div className="uppercase text-[14px] tracking-[1.4px] text-white/60 mb-4">
                     Step {s.num}
                   </div>
-                  <h3 className="text-[clamp(28px,3.5vw,48px)] font-serif tracking-[-0.04em] mb-4">
+                  <h3 className="text-[clamp(28px,3.5vw,48px)] font-serif tracking-[-0.04em] mb-4 text-white">
                     {s.title}
                   </h3>
-                  <p className="text-[18px] text-black/70 leading-[1.7] max-w-[500px] mb-8">
+                  <p className="text-[18px] text-white/80 leading-[1.7] max-w-[500px] mb-8">
                     {s.desc}
                   </p>
                   <ul className="space-y-4">
                     {s.points.map((p) => (
-                      <li
-                        key={p}
-                        className="relative pl-6 text-[16px] text-black/80"
-                      >
+                      <li key={p} className="relative pl-6 text-[16px] text-white/80">
                         <span className="absolute left-0 top-2 w-2 h-2 bg-black rounded-full" />
                         {p}
                       </li>
