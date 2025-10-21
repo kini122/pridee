@@ -107,7 +107,7 @@ export default function ProcessTimeline() {
   return (
     <section id="process" className="relative py-[80px] px-[40px] min-h-[400vh] snap-start">
       <div aria-hidden className="pointer-events-none absolute inset-0">
-        <video className="absolute inset-0 w-full h-full object-cover" src="https://www.pexels.com/download/video/2432400/" autoPlay muted loop playsInline />
+        <video className="absolute inset-0 w-full h-full object-cover" src="/videos/process.mp4" autoPlay muted loop playsInline poster="/placeholder.svg" />
         <div className="absolute inset-0 bg-black/60" aria-hidden />
       </div>
       <div className="max-w-[1200px] mx-auto">
