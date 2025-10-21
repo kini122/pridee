@@ -13,6 +13,11 @@ export default {
       },
     },
     extend: {
+      fontFamily: {
+        sans: ["Instrument Sans", "system-ui", "sans-serif"],
+        serif: ["Instrument Serif", "serif"],
+        mono: ["ui-monospace", "SFMono-Regular", "monospace"],
+      },
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
@@ -38,6 +43,12 @@ export default {
         accent: {
           DEFAULT: "hsl(var(--accent))",
           foreground: "hsl(var(--accent-foreground))",
+        },
+        soft: {
+          DEFAULT: "hsl(var(--soft))",
+        },
+        gold: {
+          DEFAULT: "hsl(var(--gold))",
         },
         popover: {
           DEFAULT: "hsl(var(--popover))",
@@ -65,25 +76,38 @@ export default {
       },
       keyframes: {
         "accordion-down": {
-          from: {
-            height: "0",
-          },
-          to: {
-            height: "var(--radix-accordion-content-height)",
-          },
+          from: { height: "0" },
+          to: { height: "var(--radix-accordion-content-height)" },
         },
         "accordion-up": {
-          from: {
-            height: "var(--radix-accordion-content-height)",
-          },
-          to: {
-            height: "0",
-          },
+          from: { height: "var(--radix-accordion-content-height)" },
+          to: { height: "0" },
+        },
+        marquee: {
+          from: { transform: "translateX(0)" },
+          to: { transform: "translateX(-50%)" },
+        },
+        float: {
+          "0%, 100%": { transform: "translateY(-5px)" },
+          "50%": { transform: "translateY(5px)" },
+        },
+        "blur-in": {
+          from: { filter: "blur(10px)", opacity: "0" },
+          to: { filter: "blur(0)", opacity: "1" },
+        },
+        pulseScale: {
+          "0%": { transform: "scale(1)" },
+          "50%": { transform: "scale(1.1)" },
+          "100%": { transform: "scale(1)" },
         },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
+        marquee: "marquee 30s linear infinite",
+        float: "float 3s ease-in-out infinite",
+        "blur-in": "blur-in 1s ease-out both",
+        pulseScale: "pulseScale 0.8s ease-out",
       },
     },
   },
