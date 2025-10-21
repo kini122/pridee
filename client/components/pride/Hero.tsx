@@ -73,7 +73,7 @@ export default function Hero() {
           >
             From Vision to Unforgettable Reality
           </h1>
-          <div className={`flex items-center gap-4 ${mounted ? "animate-[fade-in_0.8s_ease-out_0.3s_forwards] opacity-0" : ""}`}>
+          <div className={`flex items-center gap-4 ${mounted ? "animate-[blur-in_0.8s_ease-out_0.3s_forwards] opacity-0" : ""}`}>
             <a
               href="#contact"
               className="inline-flex items-center gap-2 rounded-full bg-black text-white px-6 py-3 text-[16px] font-medium transition-transform duration-300 hover:scale-[1.05] shadow-sm"
