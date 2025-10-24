@@ -105,10 +105,27 @@ export default function ProcessTimeline() {
   );
 
   return (
-    <section id="process" className="relative py-[80px] px-[40px] min-h-[400vh] snap-start">
+    <section
+      id="process"
+      className="relative py-[80px] px-[40px] min-h-[400vh] snap-start"
+    >
       <div aria-hidden className="pointer-events-none absolute inset-0">
-        <video className="absolute inset-0 w-full h-full object-cover" src="/videos/process.mp4" autoPlay muted loop playsInline poster="/placeholder.svg" />
-        <div className="absolute inset-0 bg-black/60" aria-hidden />
+        <video
+          className="absolute inset-0 w-full h-full object-cover"
+          src="/videos/process.mp4"
+          preload="auto"
+          decoding="async"
+          autoPlay
+          muted
+          loop
+          playsInline
+          poster="/placeholder.svg"
+          style={{
+            filter: "contrast(1.05) saturate(1.05)",
+            imageRendering: "auto",
+          }}
+        />
+        <div className="absolute inset-0 bg-black/40" aria-hidden />
       </div>
       <div className="max-w-[1200px] mx-auto">
         <div className="text-center mb-[100px]">
@@ -127,8 +144,15 @@ export default function ProcessTimeline() {
           {/* Left sticky nav */}
           <aside className="lg:col-span-4 relative lg:sticky lg:top-[20vh] self-start pr-[60px]">
             <div className="relative">
-              <div className="absolute left-[23px] top-0 bottom-0 w-[2px] bg-white/10" aria-hidden />
-              <div className="absolute left-[23px] top-0 w-[2px] bg-white transition-all" style={{ height: `${progressHeight}%` }} aria-hidden />
+              <div
+                className="absolute left-[23px] top-0 bottom-0 w-[2px] bg-white/10"
+                aria-hidden
+              />
+              <div
+                className="absolute left-[23px] top-0 w-[2px] bg-white transition-all"
+                style={{ height: `${progressHeight}%` }}
+                aria-hidden
+              />
               <ul className="relative z-10">
                 {STEPS.map((s, i) => (
                   <li
@@ -180,7 +204,10 @@ export default function ProcessTimeline() {
                   </p>
                   <ul className="space-y-4">
                     {s.points.map((p) => (
-                      <li key={p} className="relative pl-6 text-[16px] text-white/80">
+                      <li
+                        key={p}
+                        className="relative pl-6 text-[16px] text-white/80"
+                      >
                         <span className="absolute left-0 top-2 w-2 h-2 bg-black rounded-full" />
                         {p}
                       </li>

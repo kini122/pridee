@@ -1,38 +1,37 @@
-import Masonry from './Masonry';
+import Masonry from "./Masonry";
 
 const items = [
   {
-    id: '1',
-    img: 'https://picsum.photos/id/1015/600/900?grayscale',
-    url: 'https://example.com/one',
+    id: "1",
+    img: "https://picsum.photos/id/1015/600/900?grayscale",
+    url: "https://example.com/one",
     height: 400,
   },
   {
-    id: '2',
-    img: 'https://picsum.photos/id/1011/600/750?grayscale',
-    url: 'https://example.com/two',
+    id: "2",
+    img: "https://picsum.photos/id/1011/600/750?grayscale",
+    url: "https://example.com/two",
     height: 250,
   },
   {
-    id: '3',
-    img: 'https://picsum.photos/id/1020/600/800?grayscale',
-    url: 'https://example.com/three',
+    id: "3",
+    img: "https://picsum.photos/id/1020/600/800?grayscale",
+    url: "https://example.com/three",
     height: 600,
   },
   {
-    id: '4',
-    img: 'https://picsum.photos/id/1003/600/700',
-    url: 'https://example.com/four',
+    id: "4",
+    img: "https://picsum.photos/id/1003/600/700",
+    url: "https://example.com/four",
     height: 300,
   },
 ];
 
 export default function Testimonials() {
   return (
-    <section id="testimonials" className="w-full snap-start py-20">
+    <section id="gallery" className="w-full snap-start py-20">
       <div className="max-w-[1200px] mx-auto px-6">
-        <h2 className="text-3xl font-serif mb-4 text-center">What our clients say</h2>
-        <p className="text-center max-w-[800px] mx-auto mb-10 text-black/70">"Exceptional service, beautiful execution."</p>
+        <h2 className="text-3xl font-serif mb-6 text-center">Gallery</h2>
 
         <Masonry
           items={items}
