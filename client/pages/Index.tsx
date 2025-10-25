@@ -15,7 +15,6 @@ export default function Index() {
       <CardNav />
       <Hero />
       <Services />
-      <PortfolioHorizontal />
       <ProcessTimeline />
       <CTA />
       <LogosMarquee />
