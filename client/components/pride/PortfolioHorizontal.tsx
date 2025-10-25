@@ -297,7 +297,7 @@ export default function PortfolioHorizontal() {
           className="h-full flex items-center gap-[60px] pr-[20vw] will-change-transform"
           style={{
             width: `${ITEMS.length * 50 + (ITEMS.length - 1) * 6}vw`,
-            transform: `translate3d(${reduced ? 0 : translate}vw, 0, 0)`,
+            transform: `translate3d(${reduced ? 0 : translate}px, 0, 0)`,
             transition: isLocking ? 'transform 0.12s linear' : undefined,
           }}
         >
