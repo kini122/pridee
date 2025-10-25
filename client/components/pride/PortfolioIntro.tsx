@@ -57,8 +57,7 @@ export default function PortfolioIntro() {
             <div
               style={{ fontSize: 18, fontWeight: 400, textTransform: "none" }}
             >
-              Every event tells a story. Explore the extraordinary experiences
-              we've crafted for leading brands and organizations.
+              
             </div>
           </>
         }
