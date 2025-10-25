@@ -108,20 +108,20 @@ export default function PortfolioHorizontal() {
     document.body.style.left = '0';
     document.body.style.width = '100%';
   };
-
+  
   const unlockBody = (scrollPastSection = false) => {
     const prev = bodyStateRef.current;
     if (!prev) return;
-
+    
     document.body.style.overflow = prev.overflow || '';
     document.body.style.position = prev.position || '';
     document.body.style.top = prev.top || '';
     document.body.style.left = prev.left || '';
     document.body.style.width = prev.width || '';
-
+    
     const scrollY = prev.scrollY || 0;
     bodyStateRef.current = null;
-
+    
     if (scrollPastSection) {
       const el = containerRef.current;
       if (el) {
