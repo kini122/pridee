@@ -1,5 +1,6 @@
 import { useEffect, useRef } from "react";
 import { useInView, usePrefersReducedMotion } from "@/hooks/use-scroll";
+import PortfolioIntro from "./PortfolioIntro";
 
 const SERVICES = [
   {
