@@ -30,19 +30,7 @@ export default function Stats() {
           transition: "transform 1s ease-out",
         }}
       />
-      <div className="max-w-[1200px] mx-auto text-center text-white">
-        <h2 className="text-[clamp(32px,4.5vw,56px)] font-serif mb-20 opacity-0 animate-[fade-in_0.8s_ease-out_forwards]">
-          Proven Excellence
-        </h2>
-        <div
-          ref={ref}
-          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-[60px] mx-auto max-w-[1200px]"
-        >
-          {STATS.map((s, i) => (
-            <Stat key={i} {...s} start={inView} index={i} />
-          ))}
-        </div>
-      </div>
+      <div className="max-w-[1200px] mx-auto text-center text-white" />
     </section>
   );
 }
