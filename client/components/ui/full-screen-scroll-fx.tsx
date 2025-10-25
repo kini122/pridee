@@ -503,7 +503,7 @@ export const FullScreenScrollFX = forwardRef<HTMLDivElement, FullScreenFXProps>(
     const cssVars: CSSProperties = {
       ["--fx-font" as any]: fontFamily,
       ["--fx-text" as any]: colors.text ?? "rgba(245,245,245,0.92)",
-      ["--fx-overlay" as any]: colors.overlay ?? "rgba(0,0,0,0.35)",
+      ["--fx-overlay" as any]: colors.overlay ?? "rgba(0,0,0,0.15)",
       ["--fx-page-bg" as any]: colors.pageBg ?? "#fff",
       ["--fx-stage-bg" as any]: colors.stageBg ?? "#000",
       ["--fx-gap" as any]: `${gap}rem`,
