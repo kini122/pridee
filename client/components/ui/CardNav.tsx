@@ -12,7 +12,9 @@ export default function CardNav() {
             alt="Pride Events logo"
             className="h-14 w-auto"
           />
-          <span className="hidden sm:inline-block font-serif text-[18px] text-black">Pride Events</span>
+          <span className="hidden sm:inline-block font-serif text-[18px] text-black">
+            Pride Events
+          </span>
         </a>
 
         <nav className="hidden md:flex items-center gap-6 text-[14px]">
@@ -46,8 +48,18 @@ export default function CardNav() {
             aria-label="Open menu"
             onClick={() => setOpen((s) => !s)}
           >
-            <svg className="w-5 h-5 text-black" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-              <path strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" d={open ? "M6 18L18 6M6 6l12 12" : "M4 6h16M4 12h16M4 18h16"} />
+            <svg
+              className="w-5 h-5 text-black"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+            >
+              <path
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d={open ? "M6 18L18 6M6 6l12 12" : "M4 6h16M4 12h16M4 18h16"}
+              />
             </svg>
           </button>
         </div>
@@ -59,13 +71,21 @@ export default function CardNav() {
             <a href="#services" className="py-2" onClick={() => setOpen(false)}>
               Services
             </a>
-            <a href="#portfolio" className="py-2" onClick={() => setOpen(false)}>
+            <a
+              href="#portfolio"
+              className="py-2"
+              onClick={() => setOpen(false)}
+            >
               Portfolio
             </a>
             <a href="#process" className="py-2" onClick={() => setOpen(false)}>
               Process
             </a>
-            <a href="#testimonials" className="py-2" onClick={() => setOpen(false)}>
+            <a
+              href="#testimonials"
+              className="py-2"
+              onClick={() => setOpen(false)}
+            >
               Testimonials
             </a>
             <a href="#contact" className="py-2" onClick={() => setOpen(false)}>

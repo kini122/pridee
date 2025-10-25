@@ -51,7 +51,10 @@ const ITEMS = [
 
 export default function PortfolioHorizontal() {
   const containerRef = useRef<HTMLDivElement>(null);
-  const scrollProgress = useSectionScrollProgress(containerRef, window.innerHeight * 3);
+  const scrollProgress = useSectionScrollProgress(
+    containerRef,
+    window.innerHeight * 3,
+  );
 
   const [manualProgress, setManualProgress] = useState(0);
   const manualPxRef = useRef(0);
@@ -105,37 +108,37 @@ export default function PortfolioHorizontal() {
       left: document.body.style.left,
       width: document.body.style.width,
     };
-    document.body.style.overflow = 'hidden';
-    document.body.style.position = 'fixed';
+    document.body.style.overflow = "hidden";
+    document.body.style.position = "fixed";
     document.body.style.top = `-${initialScrollY}px`;
-    document.body.style.left = '0';
-    document.body.style.width = '100%';
+    document.body.style.left = "0";
+    document.body.style.width = "100%";
   };
 
-  const unlockBody = (direction: 'forward' | 'backward' | 'none' = 'none') => {
+  const unlockBody = (direction: "forward" | "backward" | "none" = "none") => {
     const prev = bodyStateRef.current;
     if (!prev) return;
 
     const savedInitialY = prev.initialScrollY || 0;
 
     // Restore body styles FIRST
-    document.body.style.overflow = prev.overflow || '';
-    document.body.style.position = prev.position || '';
-    document.body.style.top = prev.top || '';
-    document.body.style.left = prev.left || '';
-    document.body.style.width = prev.width || '';
+    document.body.style.overflow = prev.overflow || "";
+    document.body.style.position = prev.position || "";
+    document.body.style.top = prev.top || "";
+    document.body.style.left = prev.left || "";
+    document.body.style.width = prev.width || "";
 
     bodyStateRef.current = null;
 
     // Now handle scroll position based on direction
-    if (direction === 'forward') {
+    if (direction === "forward") {
       const el = containerRef.current;
       if (el) {
         const newScrollY = savedInitialY + el.offsetHeight;
         window.scrollTo(0, newScrollY);
         hasCompletedRef.current = true;
       }
-    } else if (direction === 'backward') {
+    } else if (direction === "backward") {
       window.scrollTo(0, savedInitialY);
       hasCompletedRef.current = false;
     } else {
@@ -194,7 +197,7 @@ export default function PortfolioHorizontal() {
         manualPxRef.current = 0;
         setManualProgress(0);
         setIsLocking(false);
-        unlockBody('backward');
+        unlockBody("backward");
         return;
       }
 
@@ -203,7 +206,7 @@ export default function PortfolioHorizontal() {
         manualPxRef.current = max;
         setManualProgress(1);
         setIsLocking(false);
-        unlockBody('forward');
+        unlockBody("forward");
         return;
       }
 
@@ -217,8 +220,8 @@ export default function PortfolioHorizontal() {
       setIsLocking(true);
     };
 
-    window.addEventListener('wheel', onWheel, { passive: false });
-    return () => window.removeEventListener('wheel', onWheel);
+    window.addEventListener("wheel", onWheel, { passive: false });
+    return () => window.removeEventListener("wheel", onWheel);
   }, []);
 
   // touch handlers
@@ -277,7 +280,7 @@ export default function PortfolioHorizontal() {
         manualPxRef.current = 0;
         setManualProgress(0);
         setIsLocking(false);
-        unlockBody('backward');
+        unlockBody("backward");
         touchStartY = null;
         return;
       }
@@ -286,7 +289,7 @@ export default function PortfolioHorizontal() {
         manualPxRef.current = max;
         setManualProgress(1);
         setIsLocking(false);
-        unlockBody('forward');
+        unlockBody("forward");
         touchStartY = null;
         return;
       }
@@ -304,20 +307,20 @@ export default function PortfolioHorizontal() {
       touchStartY = null;
     };
 
-    window.addEventListener('touchstart', onStart, { passive: false });
-    window.addEventListener('touchmove', onMove, { passive: false });
-    window.addEventListener('touchend', onEnd, { passive: true });
+    window.addEventListener("touchstart", onStart, { passive: false });
+    window.addEventListener("touchmove", onMove, { passive: false });
+    window.addEventListener("touchend", onEnd, { passive: true });
     return () => {
-      window.removeEventListener('touchstart', onStart as any);
-      window.removeEventListener('touchmove', onMove as any);
-      window.removeEventListener('touchend', onEnd as any);
+      window.removeEventListener("touchstart", onStart as any);
+      window.removeEventListener("touchmove", onMove as any);
+      window.removeEventListener("touchend", onEnd as any);
     };
   }, []);
 
   const progress = isLocking ? manualProgress : scrollProgress;
 
   const translate = useMemo(() => {
-    const max = maxScrollPx || (ITEMS.length * 50 + (ITEMS.length - 1) * 6 - 70);
+    const max = maxScrollPx || ITEMS.length * 50 + (ITEMS.length - 1) * 6 - 70;
     const px = -progress * max;
     return px;
   }, [progress, maxScrollPx]);
@@ -336,7 +339,10 @@ export default function PortfolioHorizontal() {
       </div>
 
       {/* Left intro */}
-      <div ref={leftRef} className="absolute left-0 top-0 h-full w-[30vw] min-w-[280px] p-10 md:p-20 z-10">
+      <div
+        ref={leftRef}
+        className="absolute left-0 top-0 h-full w-[30vw] min-w-[280px] p-10 md:p-20 z-10"
+      >
         <div className="sticky top-20">
           <h2 className="text-[clamp(28px,4.5vw,64px)] font-serif tracking-[-0.04em] mb-4">
             Our Portfolio
@@ -371,7 +377,7 @@ export default function PortfolioHorizontal() {
           style={{
             width: `${ITEMS.length * 50 + (ITEMS.length - 1) * 6}vw`,
             transform: `translate3d(${reduced ? 0 : translate}px, 0, 0)`,
-            transition: isLocking ? 'transform 0.12s linear' : undefined,
+            transition: isLocking ? "transform 0.12s linear" : undefined,
           }}
         >
           {ITEMS.map((it, idx) => (
