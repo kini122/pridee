@@ -62,6 +62,61 @@ export default function PortfolioHorizontal() {
   const [mounted, setMounted] = useState(false);
   useEffect(() => setMounted(true), []);
 
+  // Handlers for converting vertical scroll to horizontal when section is pinned
+  const handleWheel = (e: any) => {
+    const el = containerRef.current;
+    if (!el) return;
+    const rect = el.getBoundingClientRect();
+    const atTop = rect.top <= 1 && rect.bottom > 200;
+    if (!atTop) return; // allow normal scrolling
+
+    // prevent vertical page scroll while handling
+    e.preventDefault();
+    e.stopPropagation();
+
+    const delta = e.deltaY;
+    const sensitivity = 0.0018; // controls how fast progress changes
+    let next = manualRef.current + delta * sensitivity;
+    next = Math.max(0, Math.min(1, next));
+    manualRef.current = next;
+    setManualProgress(next);
+
+    // locking state
+    if (next > 0 && next < 1) setIsLocking(true);
+    if ((next === 0 && delta < 0) || (next === 1 && delta > 0)) {
+      // release lock to allow natural scroll past section
+      setIsLocking(false);
+    }
+  };
+
+  const touchStartY = useRef<number | null>(null);
+  const handleTouchStart = (e: any) => {
+    touchStartY.current = e.touches[0].clientY;
+  };
+  const handleTouchMove = (e: any) => {
+    const start = touchStartY.current;
+    if (start === null) return;
+    const el = containerRef.current;
+    if (!el) return;
+    const rect = el.getBoundingClientRect();
+    const atTop = rect.top <= 1 && rect.bottom > 200;
+    if (!atTop) return;
+
+    const currentY = e.touches[0].clientY;
+    const dy = start - currentY;
+    if (Math.abs(dy) < 2) return;
+    e.preventDefault();
+    e.stopPropagation();
+
+    const sensitivity = 0.0022;
+    let next = manualRef.current + dy * sensitivity;
+    next = Math.max(0, Math.min(1, next));
+    manualRef.current = next;
+    setManualProgress(next);
+    if (next > 0 && next < 1) setIsLocking(true);
+    if ((next === 0 && dy < 0) || (next === 1 && dy > 0)) setIsLocking(false);
+  };
+
   const progress = isLocking ? manualProgress : scrollProgress;
 
   const translate = useMemo(() => {
