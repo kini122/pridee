@@ -164,18 +164,17 @@ export default function PortfolioHorizontal() {
       if (nextPx <= 0 && delta < 0) {
         manualPxRef.current = 0;
         setManualProgress(0);
-        unlockBody();
         setIsLocking(false);
-        window.scrollBy(0, delta);
+        unlockBody(false);
         return;
       }
 
       if (nextPx >= max && delta > 0) {
         manualPxRef.current = max;
         setManualProgress(1);
-        unlockBody();
         setIsLocking(false);
-        window.scrollBy(0, delta);
+        // continueScroll=true -> jump to after portfolio and allow natural scroll
+        unlockBody(true);
         return;
       }
 
