@@ -141,7 +141,7 @@ export default function PortfolioHorizontal() {
       </div>
 
       {/* Left intro */}
-      <div className="absolute left-0 top-0 h-full w-[30vw] min-w-[280px] p-10 md:p-20 z-10">
+      <div ref={leftRef} className="absolute left-0 top-0 h-full w-[30vw] min-w-[280px] p-10 md:p-20 z-10">
         <div className="sticky top-20">
           <h2 className="text-[clamp(28px,4.5vw,64px)] font-serif tracking-[-0.04em] mb-4">
             Our Portfolio
