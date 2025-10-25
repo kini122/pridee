@@ -251,7 +251,7 @@ export default function ContactFooter() {
             <p className="text-white/60 mb-3 text-[14px]">
               Subscribe to get event planning tips and industry insights.
             </p>
-            <form className="flex gap-2 max-w-md">
+            <form className="flex flex-col gap-2 max-w-md">
               <input
                 className="flex-1 px-3 py-3 bg-white/5 border border-white/15 rounded-md text-white placeholder:text-white/40 focus:outline-none focus:ring-2 focus:ring-white/30"
                 placeholder="Your email"
