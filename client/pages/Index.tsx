@@ -17,8 +17,6 @@ export default function Index() {
       <Hero />
       <Services />
       <PortfolioHorizontal />
-      <Testimonials />
-      <Stats />
       <ProcessTimeline />
       <CTA />
       <LogosMarquee />
