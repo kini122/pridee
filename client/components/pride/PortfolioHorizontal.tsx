@@ -62,6 +62,8 @@ export default function PortfolioHorizontal() {
   const [mounted, setMounted] = useState(false);
   useEffect(() => setMounted(true), []);
 
+  const progress = isLocking ? manualProgress : scrollProgress;
+
   const translate = useMemo(() => {
     const max = -(ITEMS.length * 50 + (ITEMS.length - 1) * 6 - 70); // -300vw approx
     return max * progress;
