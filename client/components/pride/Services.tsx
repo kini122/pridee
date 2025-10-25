@@ -37,7 +37,7 @@ const SERVICES = [
 
 export default function Services() {
   return (
-    <section id="services" className="bg-white py-[120px] px-[40px] snap-start">
+    <section id="services" className="bg-white pt-[120px] pb-0 px-[40px] snap-start">
       <div className="max-w-[1200px] mx-auto">
         <h2 className="text-[clamp(32px,5vw,72px)] font-serif text-center max-w-[800px] mx-auto leading-tight opacity-0 animate-[blur-in_0.8s_ease-out_forwards]">
           Crafting Extraordinary Moments
