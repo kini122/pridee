@@ -112,7 +112,7 @@ export default function ProcessTimeline() {
       <div aria-hidden className="pointer-events-none absolute inset-0">
         <video
           className="absolute inset-0 w-full h-full object-cover"
-          src="/videos/process.mp4"
+          src="https://www.pexels.com/download/video/29605823/"
           preload="auto"
           decoding="async"
           autoPlay
