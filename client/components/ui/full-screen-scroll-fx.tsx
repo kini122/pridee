@@ -82,7 +82,8 @@ export type FullScreenFXProps = {
   ariaLabel?: string;
 };
 
-const clamp = (n: number, lo: number, hi: number) => Math.max(lo, Math.min(hi, n));
+const clamp = (n: number, lo: number, hi: number) =>
+  Math.max(lo, Math.min(hi, n));
 
 export const FullScreenScrollFX = forwardRef<HTMLDivElement, FullScreenFXProps>(
   (
@@ -121,12 +122,16 @@ export const FullScreenScrollFX = forwardRef<HTMLDivElement, FullScreenFXProps>(
       apiRef,
       ariaLabel = "Full screen scroll slideshow",
     },
-    ref
+    ref,
   ) => {
     const total = sections.length;
-    const [localIndex, setLocalIndex] = useState(clamp(initialIndex, 0, Math.max(0, total - 1)));
+    const [localIndex, setLocalIndex] = useState(
+      clamp(initialIndex, 0, Math.max(0, total - 1)),
+    );
     const isControlled = typeof currentIndex === "number";
-    const index = isControlled ? clamp(currentIndex!, 0, Math.max(0, total - 1)) : localIndex;
+    const index = isControlled
+      ? clamp(currentIndex!, 0, Math.max(0, total - 1))
+      : localIndex;
 
     const rootRef = useRef<HTMLDivElement | null>(null);
     const fixedRef = useRef<HTMLDivElement | null>(null);
@@ -152,7 +157,10 @@ export const FullScreenScrollFX = forwardRef<HTMLDivElement, FullScreenFXProps>(
     // prefers-reduced-motion
     const prefersReduced = useMemo(() => {
       if (typeof window === "undefined") return false;
-      return window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      return (
+        window.matchMedia &&
+        window.matchMedia("(prefers-reduced-motion: reduce)").matches
+      );
     }, []);
     const motionOff = reduceMotion ?? prefersReduced;
 
@@ -162,7 +170,12 @@ export const FullScreenScrollFX = forwardRef<HTMLDivElement, FullScreenFXProps>(
       const words = text.split(/\s+/).filter(Boolean);
       return words.map((w, i) => (
         <span className="fx-word-mask" key={i}>
-          <span className="fx-word" ref={(el) => el && tempWordBucket.current.push(el)}>{w}</span>
+          <span
+            className="fx-word"
+            ref={(el) => el && tempWordBucket.current.push(el)}
+          >
+            {w}
+          </span>
           {i < words.length - 1 ? " " : null}
         </span>
       ));
@@ -188,7 +201,7 @@ export const FullScreenScrollFX = forwardRef<HTMLDivElement, FullScreenFXProps>(
       const centerTrack = (
         container: HTMLDivElement | null,
         items: HTMLDivElement[],
-        isRight: boolean
+        isRight: boolean,
       ) => {
         if (!container || items.length === 0) return;
         const first = items[0];
@@ -197,7 +210,9 @@ export const FullScreenScrollFX = forwardRef<HTMLDivElement, FullScreenFXProps>(
         let rowH = first.getBoundingClientRect().height;
         if (second) {
           // more accurate: distance between rows includes gap
-          rowH = second.getBoundingClientRect().top - first.getBoundingClientRect().top;
+          rowH =
+            second.getBoundingClientRect().top -
+            first.getBoundingClientRect().top;
         }
         // center math
         const targetY = contRect.height / 2 - rowH / 2 - toIndex * rowH;
@@ -236,7 +251,8 @@ export const FullScreenScrollFX = forwardRef<HTMLDivElement, FullScreenFXProps>(
 
       // initial bg states
       gsap.set(bgRefs.current, { opacity: 0, scale: 1.04, yPercent: 0 });
-      if (bgRefs.current[0]) gsap.set(bgRefs.current[0], { opacity: 1, scale: 1 });
+      if (bgRefs.current[0])
+        gsap.set(bgRefs.current[0], { opacity: 1, scale: 1 });
 
       // initial center words
       wordRefs.current.forEach((words, sIdx) => {
@@ -262,7 +278,8 @@ export const FullScreenScrollFX = forwardRef<HTMLDivElement, FullScreenFXProps>(
           const prog = self.progress;
           const target = Math.min(total - 1, Math.floor(prog * total));
           if (target !== lastIndexRef.current && !isAnimatingRef.current) {
-            const next = lastIndexRef.current + (target > lastIndexRef.current ? 1 : -1);
+            const next =
+              lastIndexRef.current + (target > lastIndexRef.current ? 1 : -1);
             // programmatic one-step snap without extra sound
             goTo(next, false);
           }
@@ -346,7 +363,13 @@ export const FullScreenScrollFX = forwardRef<HTMLDivElement, FullScreenFXProps>(
       if (bgTransition === "fade") {
         if (newBg) {
           gsap.set(newBg, { opacity: 0, scale: 1.04, yPercent: down ? 1 : -1 });
-          gsap.to(newBg, { opacity: 1, scale: 1, yPercent: 0, duration: D, ease: "power2.out" });
+          gsap.to(newBg, {
+            opacity: 1,
+            scale: 1,
+            yPercent: 0,
+            duration: D,
+            ease: "power2.out",
+          });
         }
         if (prevBg) {
           gsap.to(prevBg, {
@@ -365,10 +388,18 @@ export const FullScreenScrollFX = forwardRef<HTMLDivElement, FullScreenFXProps>(
             scale: 1,
             yPercent: 0,
           });
-          gsap.to(newBg, { clipPath: "inset(0 0 0 0)", duration: D, ease: "power3.out" });
+          gsap.to(newBg, {
+            clipPath: "inset(0 0 0 0)",
+            duration: D,
+            ease: "power3.out",
+          });
         }
         if (prevBg) {
-          gsap.to(prevBg, { opacity: 0, duration: D * 0.8, ease: "power2.out" });
+          gsap.to(prevBg, {
+            opacity: 0,
+            duration: D * 0.8,
+            ease: "power2.out",
+          });
         }
       }
 
@@ -437,14 +468,26 @@ export const FullScreenScrollFX = forwardRef<HTMLDivElement, FullScreenFXProps>(
         gsap.fromTo(
           el,
           { opacity: 0, y: 20 },
-          { opacity: i === index ? 1 : 0.35, y: 0, duration: 0.5, delay: i * 0.06, ease: "power3.out" }
+          {
+            opacity: i === index ? 1 : 0.35,
+            y: 0,
+            duration: 0.5,
+            delay: i * 0.06,
+            ease: "power3.out",
+          },
         );
       });
       rightItemRefs.current.forEach((el, i) => {
         gsap.fromTo(
           el,
           { opacity: 0, y: 20 },
-          { opacity: i === index ? 1 : 0.35, y: 0, duration: 0.5, delay: 0.2 + i * 0.06, ease: "power3.out" }
+          {
+            opacity: i === index ? 1 : 0.35,
+            y: 0,
+            duration: 0.5,
+            delay: 0.2 + i * 0.06,
+            ease: "power3.out",
+          },
         );
       });
     };
@@ -473,7 +516,9 @@ export const FullScreenScrollFX = forwardRef<HTMLDivElement, FullScreenFXProps>(
         ref={(node) => {
           (rootRef as any).current = node;
           if (typeof ref === "function") ref(node);
-          else if (ref) (ref as React.MutableRefObject<HTMLDivElement | null>).current = node;
+          else if (ref)
+            (ref as React.MutableRefObject<HTMLDivElement | null>).current =
+              node;
         }}
         className={["fx", className].filter(Boolean).join(" ")}
         style={{ ...cssVars, ...style }}
@@ -489,7 +534,10 @@ export const FullScreenScrollFX = forwardRef<HTMLDivElement, FullScreenFXProps>(
                 {sections.map((s, i) => (
                   <div className="fx-bg" key={s.id ?? i}>
                     {s.renderBackground ? (
-                      s.renderBackground(index === i, lastIndexRef.current === i)
+                      s.renderBackground(
+                        index === i,
+                        lastIndexRef.current === i,
+                      )
                     ) : (
                       <>
                         <img
@@ -537,14 +585,19 @@ export const FullScreenScrollFX = forwardRef<HTMLDivElement, FullScreenFXProps>(
                       tempWordBucket.current = [];
                       const isString = typeof s.title === "string";
                       return (
-                        <div key={`C-${s.id ?? sIdx}`} className={`fx-featured ${sIdx === index ? "active" : ""}`}>
+                        <div
+                          key={`C-${s.id ?? sIdx}`}
+                          className={`fx-featured ${sIdx === index ? "active" : ""}`}
+                        >
                           <h3 className="fx-featured-title">
                             {isString ? splitWords(s.title as string) : s.title}
                           </h3>
                           <WordsCollector
                             onReady={() => {
                               if (tempWordBucket.current.length) {
-                                wordRefs.current[sIdx] = [...tempWordBucket.current];
+                                wordRefs.current[sIdx] = [
+                                  ...tempWordBucket.current,
+                                ];
                               }
                               tempWordBucket.current = [];
                             }}
@@ -580,11 +633,16 @@ export const FullScreenScrollFX = forwardRef<HTMLDivElement, FullScreenFXProps>(
                   {showProgress && (
                     <div className="fx-progress">
                       <div className="fx-progress-numbers">
-                        <span ref={currentNumberRef}>{String(index + 1).padStart(2, "0")}</span>
+                        <span ref={currentNumberRef}>
+                          {String(index + 1).padStart(2, "0")}
+                        </span>
                         <span>{String(total).padStart(2, "0")}</span>
                       </div>
                       <div className="fx-progress-bar">
-                        <div className="fx-progress-fill" ref={progressFillRef} />
+                        <div
+                          className="fx-progress-fill"
+                          ref={progressFillRef}
+                        />
                       </div>
                     </div>
                   )}
@@ -725,7 +783,7 @@ export const FullScreenScrollFX = forwardRef<HTMLDivElement, FullScreenFXProps>(
         `}</style>
       </div>
     );
-  }
+  },
 );
 
 FullScreenScrollFX.displayName = "FullScreenScrollFX";

@@ -1,5 +1,8 @@
 import React from "react";
-import { FullScreenScrollFX, FullScreenFXAPI } from "@/components/ui/full-screen-scroll-fx";
+import {
+  FullScreenScrollFX,
+  FullScreenFXAPI,
+} from "@/components/ui/full-screen-scroll-fx";
 
 const sections = [
   {
@@ -14,7 +17,8 @@ const sections = [
     leftLabel: "Essence",
     title: <>Stillness</>,
     rightLabel: "Essence",
-    background: "https://images.pexels.com/photos/163790/at-night-under-a-lantern-guy-night-city-163790.jpeg",
+    background:
+      "https://images.pexels.com/photos/163790/at-night-under-a-lantern-guy-night-city-163790.jpeg",
     audioSrc: "/sfx/whoosh-02.mp3",
   },
   {
@@ -28,7 +32,8 @@ const sections = [
     leftLabel: "Change",
     title: <>Opportunity</>,
     rightLabel: "Change",
-    background: "https://images.pexels.com/photos/939807/pexels-photo-939807.jpeg",
+    background:
+      "https://images.pexels.com/photos/939807/pexels-photo-939807.jpeg",
     audioSrc: "/sfx/whoosh-02.mp3",
   },
 ];
