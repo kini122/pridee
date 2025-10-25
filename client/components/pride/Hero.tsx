@@ -3,6 +3,7 @@ import {
   usePrefersReducedMotion,
   useSectionScrollProgress,
 } from "@/hooks/use-scroll";
+import HeroPreview from "./HeroPreview";
 
 export default function Hero() {
   const ref = useRef<HTMLDivElement>(null);
