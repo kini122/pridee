@@ -108,17 +108,31 @@ export default function PortfolioHorizontal() {
     document.body.style.left = '0';
     document.body.style.width = '100%';
   };
-  const unlockBody = () => {
+  const unlockBody = (continueScroll = false) => {
     const prev = bodyStateRef.current;
     if (!prev) return;
+    // restore body styles first
     document.body.style.overflow = prev.overflow || '';
     document.body.style.position = prev.position || '';
     document.body.style.top = prev.top || '';
     document.body.style.left = prev.left || '';
     document.body.style.width = prev.width || '';
-    const scrollY = prev.scrollY || 0;
-    window.scrollTo(0, scrollY);
+
+    const prevScrollY = prev.scrollY || 0;
     bodyStateRef.current = null;
+
+    if (continueScroll) {
+      const el = containerRef.current;
+      if (el) {
+        const newScrollY = prevScrollY + el.offsetHeight;
+        // jump to position past the portfolio section
+        window.scrollTo(0, newScrollY);
+        return;
+      }
+    }
+
+    // default: restore original scroll position
+    window.scrollTo(0, prevScrollY);
   };
 
   // global wheel handler with strict interception
