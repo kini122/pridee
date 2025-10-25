@@ -51,7 +51,7 @@ export default function PortfolioIntro() {
     <section id="portfolio-intro" className="mt-24">
       <style>{`
         @media (max-width: 768px) {
-          :global(.full-screen-scroll-fx .section-title) {
+          .full-screen-scroll-fx .section-title {
             font-size: clamp(1.5rem, 8vw, 3rem) !important;
             padding: 0 1rem !important;
             text-align: center !important;
