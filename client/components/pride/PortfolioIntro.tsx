@@ -62,7 +62,7 @@ export default function PortfolioIntro() {
             font-size: clamp(0.75rem, 3vw, 1rem) !important;
             padding: 0 0.5rem !important;
           }
-          :global(.full-screen-scroll-fx .header-text) {
+          .full-screen-scroll-fx .header-text {
             font-size: clamp(1.25rem, 6vw, 2rem) !important;
             padding: 0 1rem !important;
           }
