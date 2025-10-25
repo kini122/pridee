@@ -61,7 +61,8 @@ export default function PortfolioHorizontal() {
   const leftRef = useRef<HTMLDivElement>(null);
   const reduced = usePrefersReducedMotion();
   const [mounted, setMounted] = useState(false);
-  const hasCompletedRef = useRef(false); // Track if horizontal scroll was completed
+  const hasCompletedRef = useRef(false);
+  const isUnlockingRef = useRef(false); // Prevent multiple unlocks
 
   useEffect(() => setMounted(true), []);
 
@@ -112,46 +113,58 @@ export default function PortfolioHorizontal() {
   };
 
   const unlockBody = (continueDirection: 'forward' | 'backward' | 'none' = 'none') => {
-    const prev = bodyStateRef.current;
-    if (!prev) return;
+    if (isUnlockingRef.current) return; // Prevent duplicate unlocks
+    isUnlockingRef.current = true;
 
+    const prev = bodyStateRef.current;
+    if (!prev) {
+      isUnlockingRef.current = false;
+      return;
+    }
+
+    const scrollY = prev.scrollY || 0;
+
+    // Clear body state first
+    bodyStateRef.current = null;
+
+    // Restore styles
     document.body.style.overflow = prev.overflow || '';
     document.body.style.position = prev.position || '';
     document.body.style.top = prev.top || '';
     document.body.style.left = prev.left || '';
     document.body.style.width = prev.width || '';
 
-    const scrollY = prev.scrollY || 0;
-    bodyStateRef.current = null;
-
-    if (continueDirection === 'forward') {
-      const el = containerRef.current;
-      if (el) {
-        const sectionBottom = el.offsetTop + el.offsetHeight;
-        requestAnimationFrame(() => {
-          window.scrollTo(0, sectionBottom + 1);
+    // Calculate and apply new scroll position
+    setTimeout(() => {
+      if (continueDirection === 'forward') {
+        const el = containerRef.current;
+        if (el) {
+          const sectionBottom = el.offsetTop + el.offsetHeight;
+          window.scrollTo(0, sectionBottom);
           hasCompletedRef.current = true;
-        });
-      }
-    } else if (continueDirection === 'backward') {
-      const el = containerRef.current;
-      if (el) {
-        const sectionTop = el.offsetTop;
-        requestAnimationFrame(() => {
-          window.scrollTo(0, sectionTop - 1);
+        }
+      } else if (continueDirection === 'backward') {
+        const el = containerRef.current;
+        if (el) {
+          const sectionTop = el.offsetTop;
+          window.scrollTo(0, Math.max(0, sectionTop - 10));
           hasCompletedRef.current = false;
-        });
-      }
-    } else {
-      requestAnimationFrame(() => {
+        }
+      } else {
         window.scrollTo(0, scrollY);
-      });
-    }
+      }
+
+      setTimeout(() => {
+        isUnlockingRef.current = false;
+      }, 100);
+    }, 0);
   };
 
   // global wheel handler with strict interception
   useEffect(() => {
     const onWheel = (e: WheelEvent) => {
+      if (isUnlockingRef.current) return; // Don't intercept during unlock
+
       const el = containerRef.current;
       const inner = innerRef.current;
       const left = leftRef.current;
@@ -160,16 +173,17 @@ export default function PortfolioHorizontal() {
       const rect = el.getBoundingClientRect();
       const atTop = rect.top <= 0 && rect.bottom > 0;
 
-      // If section is in view but we've completed, allow normal scroll unless re-entering
+      // If completed and scrolling down, allow pass-through
       if (atTop && hasCompletedRef.current && e.deltaY > 0) {
-        // User is scrolling down and already completed - let it pass through
         return;
       }
 
+      // Reset completion when section scrolls out of view
       if (!atTop) {
-        // Reset completion flag when section is not in view
-        if (rect.bottom <= 0) {
+        if (rect.top > 0) {
           hasCompletedRef.current = false;
+          manualPxRef.current = 0;
+          setManualProgress(0);
         }
         return;
       }
@@ -184,7 +198,7 @@ export default function PortfolioHorizontal() {
       const sensitivity = 0.9;
       let nextPx = manualPxRef.current + delta * sensitivity;
 
-      // Scrolling backward (up/left) - reached start
+      // Scrolling backward - reached start
       if (nextPx <= 0 && delta < 0) {
         e.preventDefault();
         e.stopPropagation();
@@ -195,7 +209,7 @@ export default function PortfolioHorizontal() {
         return;
       }
 
-      // Scrolling forward (down/right) - reached end
+      // Scrolling forward - reached end
       if (nextPx >= max && delta > 0) {
         e.preventDefault();
         e.stopPropagation();
@@ -226,6 +240,8 @@ export default function PortfolioHorizontal() {
     let touchStartY: number | null = null;
     const onStart = (e: TouchEvent) => (touchStartY = e.touches[0].clientY);
     const onMove = (e: TouchEvent) => {
+      if (isUnlockingRef.current) return;
+
       const start = touchStartY;
       if (start === null) return;
       const el = containerRef.current;
@@ -241,8 +257,10 @@ export default function PortfolioHorizontal() {
       }
 
       if (!atTop) {
-        if (rect.bottom <= 0) {
+        if (rect.top > 0) {
           hasCompletedRef.current = false;
+          manualPxRef.current = 0;
+          setManualProgress(0);
         }
         return;
       }
