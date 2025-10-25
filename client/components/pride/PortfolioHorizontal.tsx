@@ -96,9 +96,9 @@ export default function PortfolioHorizontal() {
 
   const lockBody = () => {
     if (bodyStateRef.current) return;
-    const scrollY = window.scrollY || window.pageYOffset;
+    const initialScrollY = window.scrollY || window.pageYOffset;
     bodyStateRef.current = {
-      scrollY,
+      initialScrollY,
       overflow: document.body.style.overflow,
       position: document.body.style.position,
       top: document.body.style.top,
@@ -107,7 +107,7 @@ export default function PortfolioHorizontal() {
     };
     document.body.style.overflow = 'hidden';
     document.body.style.position = 'fixed';
-    document.body.style.top = `-${scrollY}px`;
+    document.body.style.top = `-${initialScrollY}px`;
     document.body.style.left = '0';
     document.body.style.width = '100%';
   };
@@ -116,7 +116,7 @@ export default function PortfolioHorizontal() {
     const prev = bodyStateRef.current;
     if (!prev) return;
 
-    const savedScrollY = prev.scrollY || 0;
+    const savedInitialY = prev.initialScrollY || 0;
 
     // Restore body styles FIRST
     document.body.style.overflow = prev.overflow || '';
@@ -129,21 +129,17 @@ export default function PortfolioHorizontal() {
 
     // Now handle scroll position based on direction
     if (direction === 'forward') {
-      // Scrolling forward: move to bottom of portfolio section
       const el = containerRef.current;
       if (el) {
-        // Force synchronous scroll to avoid any intermediate positions
-        const targetY = savedScrollY + el.offsetHeight;
-        window.scrollTo(0, targetY);
+        const newScrollY = savedInitialY + el.offsetHeight;
+        window.scrollTo(0, newScrollY);
         hasCompletedRef.current = true;
       }
     } else if (direction === 'backward') {
-      // Scrolling backward: move to top of portfolio section
-      window.scrollTo(0, savedScrollY);
+      window.scrollTo(0, savedInitialY);
       hasCompletedRef.current = false;
     } else {
-      // No direction change: restore original position
-      window.scrollTo(0, savedScrollY);
+      window.scrollTo(0, savedInitialY);
     }
   };
 
