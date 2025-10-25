@@ -650,7 +650,6 @@ export const FullScreenScrollFX = forwardRef<HTMLDivElement, FullScreenFXProps>(
               </div>
             </div>
           </div>
-
         </div>
 
         <style>{`
