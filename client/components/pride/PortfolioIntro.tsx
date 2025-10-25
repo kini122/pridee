@@ -58,7 +58,7 @@ export default function PortfolioIntro() {
             word-wrap: break-word !important;
             hyphens: auto !important;
           }
-          :global(.full-screen-scroll-fx .section-label) {
+          .full-screen-scroll-fx .section-label {
             font-size: clamp(0.75rem, 3vw, 1rem) !important;
             padding: 0 0.5rem !important;
           }
