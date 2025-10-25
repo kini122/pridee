@@ -49,12 +49,32 @@ const sections = [
 export default function PortfolioIntro() {
   return (
     <section id="portfolio-intro" className="mt-24">
+      <style jsx>{`
+        @media (max-width: 768px) {
+          :global(.full-screen-scroll-fx .section-title) {
+            font-size: clamp(1.5rem, 8vw, 3rem) !important;
+            padding: 0 1rem !important;
+            text-align: center !important;
+            word-wrap: break-word !important;
+            hyphens: auto !important;
+          }
+          :global(.full-screen-scroll-fx .section-label) {
+            font-size: clamp(0.75rem, 3vw, 1rem) !important;
+            padding: 0 0.5rem !important;
+          }
+          :global(.full-screen-scroll-fx .header-text) {
+            font-size: clamp(1.25rem, 6vw, 2rem) !important;
+            padding: 0 1rem !important;
+          }
+        }
+      `}</style>
       <FullScreenScrollFX
         sections={sections}
         header={
           <>
-            <div>Our Portfolio</div>
+            <div className="header-text">Our Portfolio</div>
             <div
+              className="header-subtext"
               style={{ fontSize: 18, fontWeight: 400, textTransform: "none" }}
             >
               
