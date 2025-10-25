@@ -62,7 +62,7 @@ const Preview = () => {
   }, [animate]);
 
   return (
-    <div className="flex w-full h-full min-h-[600px] justify-center items-center bg-transparent overflow-hidden" ref={scope}>
+    <div className="flex w-[calc(100%+80px)] -mx-[40px] h-full min-h-[420px] md:min-h-[600px] justify-center items-center bg-transparent overflow-hidden" ref={scope}>
       <motion.div
         className="z-50 text-center space-y-4 items-center flex flex-col"
         initial={{ opacity: 0, y: 10 }}
