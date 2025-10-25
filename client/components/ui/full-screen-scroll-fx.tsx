@@ -680,6 +680,7 @@ export const FullScreenScrollFX = forwardRef<HTMLDivElement, FullScreenFXProps>(
             position: relative;
             height: 100%;
             z-index: 2;
+            margin-top: 37px;
           }
 
           .fx-bgs { position: absolute; inset: 0; background: var(--fx-stage-bg); z-index: 1; }
