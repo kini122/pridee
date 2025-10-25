@@ -4,15 +4,6 @@ import {
   useSectionScrollProgress,
 } from "@/hooks/use-scroll";
 
-const IMAGES = {
-  layer1:
-    "https://images.pexels.com/photos/14636319/pexels-photo-14636319.jpeg?auto=compress&cs=tinysrgb&w=1600",
-  layer2:
-    "https://images.pexels.com/photos/11570131/pexels-photo-11570131.jpeg?auto=compress&cs=tinysrgb&w=1600",
-  layer3:
-    "https://images.pexels.com/photos/6405768/pexels-photo-6405768.jpeg?auto=compress&cs=tinysrgb&w=1600",
-};
-
 export default function Hero() {
   const ref = useRef<HTMLDivElement>(null);
   const progress = useSectionScrollProgress(ref);
@@ -37,37 +28,15 @@ export default function Hero() {
       className="relative h-[100vh] bg-soft overflow-hidden snap-start"
       aria-label="From Vision to Unforgettable Reality"
     >
-      {/* Parallax layers */}
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-0 will-change-transform"
-      >
-        <img
-          src={IMAGES.layer1}
-          alt="Corporate conference hall"
+      {/* Video background */}
+      <div aria-hidden className="pointer-events-none absolute inset-0">
+        <video
           className="absolute inset-0 w-full h-full object-cover"
-          style={{
-            transform: `translate3d(0, ${translateY1}px, 0)`,
-            opacity: opacity1,
-          }}
-        />
-        <img
-          src={IMAGES.layer2}
-          alt="Event staging detail"
-          className="absolute inset-0 w-full h-full object-cover"
-          style={{
-            transform: `translate3d(0, ${translateY2}px, 0) scale3d(${1.1 - p * 0.1}, ${1.1 - p * 0.1}, 1)`,
-            opacity: opacity2,
-          }}
-        />
-        <img
-          src={IMAGES.layer3}
-          alt="Pride Events signature work"
-          className="absolute bottom-0 left-0 w-full h-full object-contain"
-          style={{
-            transform: `translate3d(${translateX3}px, ${translateY3}px, 0)`,
-            opacity: opacity3,
-          }}
+          src="https://www.pexels.com/download/video/4916813/"
+          autoPlay
+          muted
+          loop
+          playsInline
         />
       </div>
 
