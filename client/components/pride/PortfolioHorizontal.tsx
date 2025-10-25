@@ -53,8 +53,9 @@ export default function PortfolioHorizontal() {
   const containerRef = useRef<HTMLDivElement>(null);
   const scrollProgress = useSectionScrollProgress(containerRef, window.innerHeight * 3);
 
-  const [manualProgress, setManualProgress] = useState(0);
-  const manualRef = useRef(0);
+  const [manualProgress, setManualProgress] = useState(0); // 0..1 fraction
+  const manualPxRef = useRef(0); // current horizontal px scrolled
+  const [maxScrollPx, setMaxScrollPx] = useState(0);
   const [isLocking, setIsLocking] = useState(false);
   const innerRef = useRef<HTMLDivElement>(null);
   const leftRef = useRef<HTMLDivElement>(null);
@@ -62,78 +63,188 @@ export default function PortfolioHorizontal() {
   const [mounted, setMounted] = useState(false);
   useEffect(() => setMounted(true), []);
 
-  // Handlers for converting vertical scroll to horizontal when section is pinned
-  const handleWheel = (e: any) => {
+  // compute pixel sizes for precise mapping
+  useEffect(() => {
     const el = containerRef.current;
-    if (!el) return;
-    const rect = el.getBoundingClientRect();
-    const atTop = rect.top <= 1 && rect.bottom > 200;
-    if (!atTop) return; // allow normal scrolling
+    const inner = innerRef.current;
+    const left = leftRef.current;
+    if (!el || !inner || !left) return;
 
-    // prevent vertical page scroll while handling
-    e.preventDefault();
-    e.stopPropagation();
+    const compute = () => {
+      const containerRect = el.getBoundingClientRect();
+      const leftWidth = left.getBoundingClientRect().width;
+      const visibleWidth = Math.max(1, containerRect.width - leftWidth);
+      const innerWidth = inner.scrollWidth;
+      const max = Math.max(0, innerWidth - visibleWidth);
+      setMaxScrollPx(max);
+      manualPxRef.current = Math.max(0, Math.min(manualPxRef.current, max));
+      setManualProgress(max > 0 ? manualPxRef.current / max : 0);
+    };
 
-    const delta = e.deltaY;
-    const sensitivity = 0.0018; // controls how fast progress changes
-    let next = manualRef.current + delta * sensitivity;
-    next = Math.max(0, Math.min(1, next));
-    manualRef.current = next;
-    setManualProgress(next);
+    compute();
+    const ro = new ResizeObserver(compute);
+    ro.observe(el);
+    ro.observe(inner);
+    ro.observe(left);
+    return () => ro.disconnect();
+  }, [ITEMS.length]);
 
-    // locking state
-    if (next > 0 && next < 1) setIsLocking(true);
-    if ((next === 0 && delta < 0) || (next === 1 && delta > 0)) {
-      // release lock to allow natural scroll past section
-      setIsLocking(false);
-    }
+  // body lock helpers
+  const bodyStateRef = useRef<any>(null);
+  const lockBody = () => {
+    if (bodyStateRef.current) return;
+    const scrollY = window.scrollY || window.pageYOffset;
+    bodyStateRef.current = {
+      scrollY,
+      overflow: document.body.style.overflow,
+      position: document.body.style.position,
+      top: document.body.style.top,
+      left: document.body.style.left,
+      width: document.body.style.width,
+    };
+    document.body.style.overflow = 'hidden';
+    document.body.style.position = 'fixed';
+    document.body.style.top = `-${scrollY}px`;
+    document.body.style.left = '0';
+    document.body.style.width = '100%';
+  };
+  const unlockBody = () => {
+    const prev = bodyStateRef.current;
+    if (!prev) return;
+    document.body.style.overflow = prev.overflow || '';
+    document.body.style.position = prev.position || '';
+    document.body.style.top = prev.top || '';
+    document.body.style.left = prev.left || '';
+    document.body.style.width = prev.width || '';
+    const scrollY = prev.scrollY || 0;
+    window.scrollTo(0, scrollY);
+    bodyStateRef.current = null;
   };
 
-  const touchStartY = useRef<number | null>(null);
-  const handleTouchStart = (e: any) => {
-    touchStartY.current = e.touches[0].clientY;
-  };
-  const handleTouchMove = (e: any) => {
-    const start = touchStartY.current;
-    if (start === null) return;
-    const el = containerRef.current;
-    if (!el) return;
-    const rect = el.getBoundingClientRect();
-    const atTop = rect.top <= 1 && rect.bottom > 200;
-    if (!atTop) return;
+  // global wheel handler with strict interception
+  useEffect(() => {
+    const onWheel = (e: WheelEvent) => {
+      const el = containerRef.current;
+      const inner = innerRef.current;
+      const left = leftRef.current;
+      if (!el || !inner || !left) return;
+      const rect = el.getBoundingClientRect();
+      const atTop = rect.top <= 0 && rect.bottom > 0; // section reached top
+      if (!atTop) return; // don't intercept
 
-    const currentY = e.touches[0].clientY;
-    const dy = start - currentY;
-    if (Math.abs(dy) < 2) return;
-    e.preventDefault();
-    e.stopPropagation();
+      const containerRect = el.getBoundingClientRect();
+      const leftWidth = left.getBoundingClientRect().width;
+      const visibleWidth = Math.max(1, containerRect.width - leftWidth);
+      const max = Math.max(0, inner.scrollWidth - visibleWidth);
+      if (max <= 0) return;
 
-    const sensitivity = 0.0022;
-    let next = manualRef.current + dy * sensitivity;
-    next = Math.max(0, Math.min(1, next));
-    manualRef.current = next;
-    setManualProgress(next);
-    if (next > 0 && next < 1) setIsLocking(true);
-    if ((next === 0 && dy < 0) || (next === 1 && dy > 0)) setIsLocking(false);
-  };
+      e.preventDefault();
+      e.stopPropagation();
+
+      if (!bodyStateRef.current) lockBody();
+
+      const delta = e.deltaY;
+      const sensitivity = 0.9; // px per delta
+      let nextPx = manualPxRef.current + delta * sensitivity;
+
+      if (nextPx <= 0 && delta < 0) {
+        manualPxRef.current = 0;
+        setManualProgress(0);
+        unlockBody();
+        setIsLocking(false);
+        window.scrollBy(0, delta);
+        return;
+      }
+
+      if (nextPx >= max && delta > 0) {
+        manualPxRef.current = max;
+        setManualProgress(1);
+        unlockBody();
+        setIsLocking(false);
+        window.scrollBy(0, delta);
+        return;
+      }
+
+      manualPxRef.current = Math.max(0, Math.min(max, nextPx));
+      setManualProgress(max > 0 ? manualPxRef.current / max : 0);
+      setIsLocking(true);
+    };
+
+    window.addEventListener('wheel', onWheel, { passive: false });
+    return () => window.removeEventListener('wheel', onWheel);
+  }, []);
+
+  // touch handlers
+  useEffect(() => {
+    let touchStartY: number | null = null;
+    const onStart = (e: TouchEvent) => (touchStartY = e.touches[0].clientY);
+    const onMove = (e: TouchEvent) => {
+      const start = touchStartY;
+      if (start === null) return;
+      const el = containerRef.current;
+      const inner = innerRef.current;
+      const left = leftRef.current;
+      if (!el || !inner || !left) return;
+      const rect = el.getBoundingClientRect();
+      const atTop = rect.top <= 0 && rect.bottom > 0;
+      if (!atTop) return;
+
+      const deltaY = start - e.touches[0].clientY;
+      if (Math.abs(deltaY) < 2) return;
+
+      const containerRect = el.getBoundingClientRect();
+      const leftWidth = left.getBoundingClientRect().width;
+      const visibleWidth = Math.max(1, containerRect.width - leftWidth);
+      const max = Math.max(0, inner.scrollWidth - visibleWidth);
+      if (max <= 0) return;
+
+      e.preventDefault();
+      e.stopPropagation();
+
+      if (!bodyStateRef.current) lockBody();
+
+      const sensitivity = 1.0;
+      let nextPx = manualPxRef.current + deltaY * sensitivity;
+
+      if (nextPx <= 0 && deltaY < 0) {
+        manualPxRef.current = 0;
+        setManualProgress(0);
+        unlockBody();
+        setIsLocking(false);
+        window.scrollBy(0, deltaY);
+        return;
+      }
+
+      if (nextPx >= max && deltaY > 0) {
+        manualPxRef.current = max;
+        setManualProgress(1);
+        unlockBody();
+        setIsLocking(false);
+        window.scrollBy(0, deltaY);
+        return;
+      }
+
+      manualPxRef.current = Math.max(0, Math.min(max, nextPx));
+      setManualProgress(max > 0 ? manualPxRef.current / max : 0);
+      setIsLocking(true);
+    };
+
+    window.addEventListener('touchstart', onStart, { passive: false });
+    window.addEventListener('touchmove', onMove, { passive: false });
+    return () => {
+      window.removeEventListener('touchstart', onStart as any);
+      window.removeEventListener('touchmove', onMove as any);
+    };
+  }, []);
 
   const progress = isLocking ? manualProgress : scrollProgress;
 
-  // block wheel at window level while we are locking to avoid page scroll
-  useEffect(() => {
-    const handler = (e: WheelEvent) => {
-      if (isLocking) {
-        e.preventDefault();
-      }
-    };
-    if (isLocking) window.addEventListener('wheel', handler, { passive: false });
-    return () => window.removeEventListener('wheel', handler);
-  }, [isLocking]);
-
   const translate = useMemo(() => {
-    const max = -(ITEMS.length * 50 + (ITEMS.length - 1) * 6 - 70); // -300vw approx
-    return max * progress;
-  }, [progress]);
+    // translate in pixels based on manual progress and measured maxScrollPx
+    const max = maxScrollPx || (ITEMS.length * 50 + (ITEMS.length - 1) * 6 - 70);
+    const px = -progress * max;
+    return px;
+  }, [progress, maxScrollPx]);
 
   return (
     <section
