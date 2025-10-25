@@ -49,7 +49,7 @@ const sections = [
 export default function PortfolioIntro() {
   return (
     <section id="portfolio-intro" className="mt-24">
-      <style jsx>{`
+      <style>{`
         @media (max-width: 768px) {
           :global(.full-screen-scroll-fx .section-label) {
             display: none !important;
