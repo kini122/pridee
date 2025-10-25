@@ -119,6 +119,17 @@ export default function PortfolioHorizontal() {
 
   const progress = isLocking ? manualProgress : scrollProgress;
 
+  // block wheel at window level while we are locking to avoid page scroll
+  useEffect(() => {
+    const handler = (e: WheelEvent) => {
+      if (isLocking) {
+        e.preventDefault();
+      }
+    };
+    if (isLocking) window.addEventListener('wheel', handler, { passive: false });
+    return () => window.removeEventListener('wheel', handler);
+  }, [isLocking]);
+
   const translate = useMemo(() => {
     const max = -(ITEMS.length * 50 + (ITEMS.length - 1) * 6 - 70); // -300vw approx
     return max * progress;
