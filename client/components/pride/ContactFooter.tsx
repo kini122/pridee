@@ -256,7 +256,7 @@ export default function ContactFooter() {
                 className="flex-1 px-3 py-3 bg-white/5 border border-white/15 rounded-md text-white placeholder:text-white/40 focus:outline-none focus:ring-2 focus:ring-white/30"
                 placeholder="Your email"
               />
-              <button className="px-4 py-3 bg-white text-black rounded-md font-medium hover:scale-[1.05] transition-transform">
+              <button className="w-full px-4 py-3 bg-white text-black rounded-md font-medium hover:scale-[1.05] transition-transform">
                 Subscribe
               </button>
             </form>
