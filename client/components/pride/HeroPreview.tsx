@@ -69,8 +69,14 @@ const Preview = () => {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.88, delay: 1.5 }}
       >
-        <p className="text-5xl md:text-7xl z-50 text-white font-calendas italic">fancy.</p>
-        <p className="text-xs z-50 hover:scale-110 transition-transform bg-white text-black rounded-full py-2 w-20 cursor-pointer">Download</p>
+        <p className="text-5xl md:text-7xl z-50 text-white font-calendas italic" style={{ marginTop: "-5px" }}>
+          <span style={{ fontStyle: "normal" }}>
+            <span>
+              Elevate Your Corporate <br />
+              Events with Style &amp; Precision!
+            </span>
+          </span>
+        </p>
       </motion.div>
 
       <Floating sensitivity={-1} className="overflow-hidden">
