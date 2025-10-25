@@ -49,22 +49,26 @@ const sections = [
 export default function PortfolioIntro() {
   return (
     <section id="portfolio-intro" className="mt-24">
-      <style>{`
+      <style jsx>{`
         @media (max-width: 768px) {
-          .full-screen-scroll-fx .section-title {
-            font-size: clamp(1.5rem, 8vw, 3rem) !important;
-            padding: 0 1rem !important;
+          :global(.full-screen-scroll-fx .section-label) {
+            display: none !important;
+          }
+          :global(.full-screen-scroll-fx .section-title) {
+            font-size: clamp(1.5rem, 7vw, 3rem) !important;
+            padding: 0 1.5rem !important;
             text-align: center !important;
             word-wrap: break-word !important;
             hyphens: auto !important;
+            line-height: 1.2 !important;
           }
-          .full-screen-scroll-fx .section-label {
-            font-size: clamp(0.75rem, 3vw, 1rem) !important;
-            padding: 0 0.5rem !important;
-          }
-          .full-screen-scroll-fx .header-text {
-            font-size: clamp(1.25rem, 6vw, 2rem) !important;
+          :global(.full-screen-scroll-fx .header-text) {
+            font-size: clamp(1.5rem, 7vw, 2.5rem) !important;
             padding: 0 1rem !important;
+            line-height: 1.3 !important;
+          }
+          :global(.full-screen-scroll-fx .header-subtext) {
+            font-size: clamp(0.875rem, 4vw, 1.125rem) !important;
           }
         }
       `}</style>
