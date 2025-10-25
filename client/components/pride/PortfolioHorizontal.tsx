@@ -53,8 +53,8 @@ export default function PortfolioHorizontal() {
   const containerRef = useRef<HTMLDivElement>(null);
   const scrollProgress = useSectionScrollProgress(containerRef, window.innerHeight * 3);
 
-  const [manualProgress, setManualProgress] = useState(0); // 0..1 fraction
-  const manualPxRef = useRef(0); // current horizontal px scrolled
+  const [manualProgress, setManualProgress] = useState(0);
+  const manualPxRef = useRef(0);
   const [maxScrollPx, setMaxScrollPx] = useState(0);
   const [isLocking, setIsLocking] = useState(false);
   const innerRef = useRef<HTMLDivElement>(null);
@@ -108,31 +108,33 @@ export default function PortfolioHorizontal() {
     document.body.style.left = '0';
     document.body.style.width = '100%';
   };
-  const unlockBody = (continueScroll = false) => {
+
+  const unlockBody = (scrollPastSection = false) => {
     const prev = bodyStateRef.current;
     if (!prev) return;
-    // restore body styles first
+
     document.body.style.overflow = prev.overflow || '';
     document.body.style.position = prev.position || '';
     document.body.style.top = prev.top || '';
     document.body.style.left = prev.left || '';
     document.body.style.width = prev.width || '';
 
-    const prevScrollY = prev.scrollY || 0;
+    const scrollY = prev.scrollY || 0;
     bodyStateRef.current = null;
 
-    if (continueScroll) {
+    if (scrollPastSection) {
       const el = containerRef.current;
       if (el) {
-        const newScrollY = prevScrollY + el.offsetHeight;
-        // jump to position past the portfolio section
-        window.scrollTo(0, newScrollY);
-        return;
+        const sectionBottom = el.offsetTop + el.offsetHeight;
+        requestAnimationFrame(() => {
+          window.scrollTo(0, sectionBottom + 10);
+        });
       }
+    } else {
+      requestAnimationFrame(() => {
+        window.scrollTo(0, scrollY);
+      });
     }
-
-    // default: restore original scroll position
-    window.scrollTo(0, prevScrollY);
   };
 
   // global wheel handler with strict interception
@@ -143,8 +145,8 @@ export default function PortfolioHorizontal() {
       const left = leftRef.current;
       if (!el || !inner || !left) return;
       const rect = el.getBoundingClientRect();
-      const atTop = rect.top <= 0 && rect.bottom > 0; // section reached top
-      if (!atTop) return; // don't intercept
+      const atTop = rect.top <= 0 && rect.bottom > 0;
+      if (!atTop) return;
 
       const containerRect = el.getBoundingClientRect();
       const leftWidth = left.getBoundingClientRect().width;
@@ -152,31 +154,34 @@ export default function PortfolioHorizontal() {
       const max = Math.max(0, inner.scrollWidth - visibleWidth);
       if (max <= 0) return;
 
-      e.preventDefault();
-      e.stopPropagation();
-
-      if (!bodyStateRef.current) lockBody();
-
       const delta = e.deltaY;
-      const sensitivity = 0.9; // px per delta
+      const sensitivity = 0.9;
       let nextPx = manualPxRef.current + delta * sensitivity;
 
       if (nextPx <= 0 && delta < 0) {
+        e.preventDefault();
+        e.stopPropagation();
         manualPxRef.current = 0;
         setManualProgress(0);
-        setIsLocking(false);
         unlockBody(false);
+        setIsLocking(false);
         return;
       }
 
       if (nextPx >= max && delta > 0) {
+        e.preventDefault();
+        e.stopPropagation();
         manualPxRef.current = max;
         setManualProgress(1);
-        setIsLocking(false);
-        // continueScroll=true -> jump to after portfolio and allow natural scroll
         unlockBody(true);
+        setIsLocking(false);
         return;
       }
+
+      e.preventDefault();
+      e.stopPropagation();
+
+      if (!bodyStateRef.current) lockBody();
 
       manualPxRef.current = Math.max(0, Math.min(max, nextPx));
       setManualProgress(max > 0 ? manualPxRef.current / max : 0);
@@ -211,30 +216,33 @@ export default function PortfolioHorizontal() {
       const max = Math.max(0, inner.scrollWidth - visibleWidth);
       if (max <= 0) return;
 
-      e.preventDefault();
-      e.stopPropagation();
-
-      if (!bodyStateRef.current) lockBody();
-
       const sensitivity = 1.0;
       let nextPx = manualPxRef.current + deltaY * sensitivity;
 
       if (nextPx <= 0 && deltaY < 0) {
+        e.preventDefault();
+        e.stopPropagation();
         manualPxRef.current = 0;
         setManualProgress(0);
-        setIsLocking(false);
         unlockBody(false);
+        setIsLocking(false);
         return;
       }
 
       if (nextPx >= max && deltaY > 0) {
+        e.preventDefault();
+        e.stopPropagation();
         manualPxRef.current = max;
         setManualProgress(1);
-        setIsLocking(false);
-        // continue after portfolio
         unlockBody(true);
+        setIsLocking(false);
         return;
       }
+
+      e.preventDefault();
+      e.stopPropagation();
+
+      if (!bodyStateRef.current) lockBody();
 
       manualPxRef.current = Math.max(0, Math.min(max, nextPx));
       setManualProgress(max > 0 ? manualPxRef.current / max : 0);
@@ -252,7 +260,6 @@ export default function PortfolioHorizontal() {
   const progress = isLocking ? manualProgress : scrollProgress;
 
   const translate = useMemo(() => {
-    // translate in pixels based on manual progress and measured maxScrollPx
     const max = maxScrollPx || (ITEMS.length * 50 + (ITEMS.length - 1) * 6 - 70);
     const px = -progress * max;
     return px;
