@@ -51,10 +51,10 @@ export default function PortfolioIntro() {
     <section id="portfolio-intro" className="mt-24">
       <style>{`
         @media (max-width: 768px) {
-          :global(.full-screen-scroll-fx .section-label) {
+          .full-screen-scroll-fx .section-label {
             display: none !important;
           }
-          :global(.full-screen-scroll-fx .section-title) {
+          .full-screen-scroll-fx .section-title {
             font-size: clamp(1.5rem, 7vw, 3rem) !important;
             padding: 0 1.5rem !important;
             text-align: center !important;
@@ -62,12 +62,12 @@ export default function PortfolioIntro() {
             hyphens: auto !important;
             line-height: 1.2 !important;
           }
-          :global(.full-screen-scroll-fx .header-text) {
+          .full-screen-scroll-fx .header-text {
             font-size: clamp(1.5rem, 7vw, 2.5rem) !important;
             padding: 0 1rem !important;
             line-height: 1.3 !important;
           }
-          :global(.full-screen-scroll-fx .header-subtext) {
+          .full-screen-scroll-fx .header-subtext {
             font-size: clamp(0.875rem, 4vw, 1.125rem) !important;
           }
         }
