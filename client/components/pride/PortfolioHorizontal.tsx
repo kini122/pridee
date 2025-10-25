@@ -51,10 +51,13 @@ const ITEMS = [
 
 export default function PortfolioHorizontal() {
   const containerRef = useRef<HTMLDivElement>(null);
-  const progress = useSectionScrollProgress(
-    containerRef,
-    window.innerHeight * 3,
-  );
+  const scrollProgress = useSectionScrollProgress(containerRef, window.innerHeight * 3);
+
+  const [manualProgress, setManualProgress] = useState(0);
+  const manualRef = useRef(0);
+  const [isLocking, setIsLocking] = useState(false);
+  const innerRef = useRef<HTMLDivElement>(null);
+  const leftRef = useRef<HTMLDivElement>(null);
   const reduced = usePrefersReducedMotion();
   const [mounted, setMounted] = useState(false);
   useEffect(() => setMounted(true), []);
