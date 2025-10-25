@@ -560,25 +560,6 @@ export const FullScreenScrollFX = forwardRef<HTMLDivElement, FullScreenFXProps>(
 
                 {/* Content (lists + center) */}
                 <div className="fx-content">
-                  {/* Left list */}
-                  <div className="fx-left" role="list">
-                    <div className="fx-track" ref={leftTrackRef}>
-                      {sections.map((s, i) => (
-                        <div
-                          key={`L-${s.id ?? i}`}
-                          className={`fx-item fx-left-item ${i === index ? "active" : ""}`}
-                          ref={(el) => el && (leftItemRefs.current[i] = el)}
-                          onClick={() => handleJump(i)}
-                          role="button"
-                          tabIndex={0}
-                          aria-pressed={i === index}
-                        >
-                          {s.leftLabel}
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-
                   {/* Center title (masked words if string) */}
                   <div className="fx-center">
                     {sections.map((s, sIdx) => {
