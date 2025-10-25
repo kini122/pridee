@@ -338,36 +338,11 @@ export default function PortfolioHorizontal() {
         />
       </div>
 
-      {/* Left intro */}
+      {/* Left intro removed per request */}
       <div
         ref={leftRef}
         className="absolute left-0 top-0 h-full w-[30vw] min-w-[280px] p-10 md:p-20 z-10"
-      >
-        <div className="sticky top-20">
-          <h2 className="text-[clamp(28px,4.5vw,64px)] font-serif tracking-[-0.04em] mb-4">
-            Our Portfolio
-          </h2>
-          <div className="h-[2px] w-full bg-white/30 overflow-hidden mb-4">
-            <div
-              className="h-full bg-white"
-              style={{ width: `${progress * 100}%` }}
-            />
-          </div>
-          <p className="text-white/80 max-w-[400px] text-[18px] leading-relaxed">
-            Every event tells a story. Explore the extraordinary experiences
-            we've crafted for leading brands and organizations.
-          </p>
-          <div className="mt-6 text-white/60 text-sm">
-            {String(
-              Math.min(
-                ITEMS.length,
-                Math.max(1, Math.round(progress * ITEMS.length)),
-              ),
-            ).padStart(2, "0")}{" "}
-            / {String(ITEMS.length).padStart(2, "0")}
-          </div>
-        </div>
-      </div>
+      />
 
       {/* Horizontal gallery */}
       <div className="absolute top-0 left-[30vw] h-full w-[70vw] overflow-hidden">
