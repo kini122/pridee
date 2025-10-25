@@ -80,9 +80,7 @@ export default function PortfolioIntro() {
             <div
               className="header-subtext"
               style={{ fontSize: 18, fontWeight: 400, textTransform: "none" }}
-            >
-              
-            </div>
+            ></div>
           </>
         }
         footer={<div />}

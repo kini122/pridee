@@ -1,5 +1,12 @@
 "use client";
-import React, { createContext, ReactNode, useCallback, useContext, useEffect, useRef } from "react";
+import React, {
+  createContext,
+  ReactNode,
+  useCallback,
+  useContext,
+  useEffect,
+  useRef,
+} from "react";
 import { useAnimationFrame } from "motion/react";
 import { cn } from "@/lib/utils";
 import { useMousePositionRef } from "@/hooks/use-mouse-position-ref";
@@ -18,20 +25,37 @@ interface FloatingProps {
   easingFactor?: number;
 }
 
-const Floating = ({ children, className, sensitivity = 1, easingFactor = 0.05, ...props }: FloatingProps) => {
+const Floating = ({
+  children,
+  className,
+  sensitivity = 1,
+  easingFactor = 0.05,
+  ...props
+}: FloatingProps) => {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const elementsMap = useRef(
     new Map<
       string,
-      { element: HTMLDivElement; depth: number; currentPosition: { x: number; y: number } }
-    >()
+      {
+        element: HTMLDivElement;
+        depth: number;
+        currentPosition: { x: number; y: number };
+      }
+    >(),
   );
 
   const mousePositionRef = useMousePositionRef(containerRef);
 
-  const registerElement = useCallback((id: string, element: HTMLDivElement, depth: number) => {
-    elementsMap.current.set(id, { element, depth, currentPosition: { x: 0, y: 0 } });
-  }, []);
+  const registerElement = useCallback(
+    (id: string, element: HTMLDivElement, depth: number) => {
+      elementsMap.current.set(id, {
+        element,
+        depth,
+        currentPosition: { x: 0, y: 0 },
+      });
+    },
+    [],
+  );
 
   const unregisterElement = useCallback((id: string) => {
     elementsMap.current.delete(id);
@@ -53,7 +77,11 @@ const Floating = ({ children, className, sensitivity = 1, easingFactor = 0.05, .
 
   return (
     <FloatingContext.Provider value={{ registerElement, unregisterElement }}>
-      <div ref={containerRef} className={cn("absolute top-0 left-0 w-full h-full", className)} {...props}>
+      <div
+        ref={containerRef}
+        className={cn("absolute top-0 left-0 w-full h-full", className)}
+        {...props}
+      >
         {children}
       </div>
     </FloatingContext.Provider>
@@ -68,7 +96,11 @@ interface FloatingElementProps {
   depth?: number;
 }
 
-export const FloatingElement = ({ children, className, depth = 1 }: FloatingElementProps) => {
+export const FloatingElement = ({
+  children,
+  className,
+  depth = 1,
+}: FloatingElementProps) => {
   const elementRef = useRef<HTMLDivElement | null>(null);
   const idRef = useRef(Math.random().toString(36).substring(7));
   const context = useContext(FloatingContext);
@@ -81,7 +113,10 @@ export const FloatingElement = ({ children, className, depth = 1 }: FloatingElem
   }, [depth, context]);
 
   return (
-    <div ref={elementRef} className={cn("absolute will-change-transform", className)}>
+    <div
+      ref={elementRef}
+      className={cn("absolute will-change-transform", className)}
+    >
       {children}
     </div>
   );

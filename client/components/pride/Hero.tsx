@@ -49,7 +49,6 @@ export default function Hero() {
           <HeroPreview />
         </div>
       </div>
-
     </section>
   );
 }
