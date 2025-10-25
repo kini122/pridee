@@ -50,12 +50,6 @@ export default function Hero() {
         </div>
       </div>
 
-      {/* Exit fade with scroll */}
-      <div
-        aria-hidden
-        className="absolute inset-0 bg-white"
-        style={{ opacity: 1 - (reduced ? 1 : 0.7 + p * 0.3) }}
-      />
     </section>
   );
 }
