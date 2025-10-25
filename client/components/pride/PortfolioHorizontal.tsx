@@ -128,6 +128,9 @@ export default function PortfolioHorizontal() {
     <section
       id="portfolio"
       ref={containerRef}
+      onWheel={handleWheel}
+      onTouchStart={handleTouchStart}
+      onTouchMove={handleTouchMove}
       className="relative h-[100vh] bg-black text-white overflow-hidden snap-start"
     >
       <div className="absolute top-0 left-0 w-full h-[2px] bg-white/20">
