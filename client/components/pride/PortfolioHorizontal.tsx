@@ -61,6 +61,8 @@ export default function PortfolioHorizontal() {
   const leftRef = useRef<HTMLDivElement>(null);
   const reduced = usePrefersReducedMotion();
   const [mounted, setMounted] = useState(false);
+  const hasCompletedRef = useRef(false); // Track if horizontal scroll was completed
+
   useEffect(() => setMounted(true), []);
 
   // compute pixel sizes for precise mapping
@@ -108,26 +110,36 @@ export default function PortfolioHorizontal() {
     document.body.style.left = '0';
     document.body.style.width = '100%';
   };
-  
-  const unlockBody = (scrollPastSection = false) => {
+
+  const unlockBody = (continueDirection: 'forward' | 'backward' | 'none' = 'none') => {
     const prev = bodyStateRef.current;
     if (!prev) return;
-    
+
     document.body.style.overflow = prev.overflow || '';
     document.body.style.position = prev.position || '';
     document.body.style.top = prev.top || '';
     document.body.style.left = prev.left || '';
     document.body.style.width = prev.width || '';
-    
+
     const scrollY = prev.scrollY || 0;
     bodyStateRef.current = null;
-    
-    if (scrollPastSection) {
+
+    if (continueDirection === 'forward') {
       const el = containerRef.current;
       if (el) {
         const sectionBottom = el.offsetTop + el.offsetHeight;
         requestAnimationFrame(() => {
-          window.scrollTo(0, sectionBottom + 10);
+          window.scrollTo(0, sectionBottom + 1);
+          hasCompletedRef.current = true;
+        });
+      }
+    } else if (continueDirection === 'backward') {
+      const el = containerRef.current;
+      if (el) {
+        const sectionTop = el.offsetTop;
+        requestAnimationFrame(() => {
+          window.scrollTo(0, sectionTop - 1);
+          hasCompletedRef.current = false;
         });
       }
     } else {
@@ -144,9 +156,23 @@ export default function PortfolioHorizontal() {
       const inner = innerRef.current;
       const left = leftRef.current;
       if (!el || !inner || !left) return;
+
       const rect = el.getBoundingClientRect();
       const atTop = rect.top <= 0 && rect.bottom > 0;
-      if (!atTop) return;
+
+      // If section is in view but we've completed, allow normal scroll unless re-entering
+      if (atTop && hasCompletedRef.current && e.deltaY > 0) {
+        // User is scrolling down and already completed - let it pass through
+        return;
+      }
+
+      if (!atTop) {
+        // Reset completion flag when section is not in view
+        if (rect.bottom <= 0) {
+          hasCompletedRef.current = false;
+        }
+        return;
+      }
 
       const containerRect = el.getBoundingClientRect();
       const leftWidth = left.getBoundingClientRect().width;
@@ -158,26 +184,29 @@ export default function PortfolioHorizontal() {
       const sensitivity = 0.9;
       let nextPx = manualPxRef.current + delta * sensitivity;
 
+      // Scrolling backward (up/left) - reached start
       if (nextPx <= 0 && delta < 0) {
         e.preventDefault();
         e.stopPropagation();
         manualPxRef.current = 0;
         setManualProgress(0);
-        unlockBody(false);
         setIsLocking(false);
+        unlockBody('backward');
         return;
       }
 
+      // Scrolling forward (down/right) - reached end
       if (nextPx >= max && delta > 0) {
         e.preventDefault();
         e.stopPropagation();
         manualPxRef.current = max;
         setManualProgress(1);
-        unlockBody(true);
         setIsLocking(false);
+        unlockBody('forward');
         return;
       }
 
+      // Still scrolling horizontally
       e.preventDefault();
       e.stopPropagation();
 
@@ -203,9 +232,20 @@ export default function PortfolioHorizontal() {
       const inner = innerRef.current;
       const left = leftRef.current;
       if (!el || !inner || !left) return;
+
       const rect = el.getBoundingClientRect();
       const atTop = rect.top <= 0 && rect.bottom > 0;
-      if (!atTop) return;
+
+      if (atTop && hasCompletedRef.current && start > e.touches[0].clientY) {
+        return;
+      }
+
+      if (!atTop) {
+        if (rect.bottom <= 0) {
+          hasCompletedRef.current = false;
+        }
+        return;
+      }
 
       const deltaY = start - e.touches[0].clientY;
       if (Math.abs(deltaY) < 2) return;
@@ -224,8 +264,8 @@ export default function PortfolioHorizontal() {
         e.stopPropagation();
         manualPxRef.current = 0;
         setManualProgress(0);
-        unlockBody(false);
         setIsLocking(false);
+        unlockBody('backward');
         return;
       }
 
@@ -234,8 +274,8 @@ export default function PortfolioHorizontal() {
         e.stopPropagation();
         manualPxRef.current = max;
         setManualProgress(1);
-        unlockBody(true);
         setIsLocking(false);
+        unlockBody('forward');
         return;
       }
 
