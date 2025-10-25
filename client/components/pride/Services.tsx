@@ -46,6 +46,10 @@ export default function Services() {
             <ServiceCard key={s.title} {...s} index={i} />
           ))}
         </div>
+
+        {/* Portfolio intro section */}
+        <PortfolioIntro />
+
       </div>
     </section>
   );
