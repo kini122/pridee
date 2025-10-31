@@ -3,6 +3,7 @@ import {
   usePrefersReducedMotion,
   useSectionScrollProgress,
 } from "@/hooks/use-scroll";
+import HeroPreview from "./HeroPreview";
 
 export default function Hero() {
   const ref = useRef<HTMLDivElement>(null);
@@ -43,39 +44,11 @@ export default function Hero() {
       {/* Center content */}
       <div className="relative z-10 h-full flex items-center justify-center p-[40px] pt-[145px] pb-[100px]">
         <div className="max-w-[1200px] w-full mx-auto flex flex-col items-center text-center gap-8">
-          <h1
-            className={`max-w-[600px] font-serif leading-[1.1] tracking-[-0.04em] text-[clamp(36px,6vw,90px)] ${
-              mounted ? "animate-[blur-in_1.2s_ease-out_forwards]" : "opacity-0"
-            }`}
-            style={{ filter: `blur(${p * 3}px)` }}
-          >
-            From Vision to Unforgettable Reality
-          </h1>
-          <div
-            className={`flex items-center gap-4 ${mounted ? "animate-[blur-in_0.8s_ease-out_0.3s_forwards] opacity-0" : ""}`}
-          >
-            <a
-              href="#contact"
-              className="inline-flex items-center gap-2 rounded-full bg-black text-white px-6 py-3 text-[16px] font-medium transition-transform duration-300 hover:scale-[1.05] shadow-sm"
-            >
-              Plan your event
-            </a>
-            <a
-              href="#portfolio"
-              className="inline-flex items-center gap-2 rounded-full bg-white text-black px-6 py-3 text-[16px] font-medium transition-transform duration-300 hover:scale-[1.05] shadow-sm"
-            >
-              Our portfolio
-            </a>
-          </div>
+          {/* Use the new animated Preview component */}
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <HeroPreview />
         </div>
       </div>
-
-      {/* Exit fade with scroll */}
-      <div
-        aria-hidden
-        className="absolute inset-0 bg-white"
-        style={{ opacity: 1 - (reduced ? 1 : 0.7 + p * 0.3) }}
-      />
     </section>
   );
 }

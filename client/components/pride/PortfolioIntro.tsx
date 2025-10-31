@@ -1,0 +1,92 @@
+import React from "react";
+import { FullScreenScrollFX } from "@/components/ui/full-screen-scroll-fx";
+
+const sections = [
+  {
+    leftLabel: "Tech Summit",
+    title: "Tech Summit 2024",
+    rightLabel: "Tech Summit",
+    background:
+      "https://images.pexels.com/photos/2833037/pexels-photo-2833037.jpeg?auto=compress&cs=tinysrgb&w=1600",
+  },
+  {
+    leftLabel: "Luxury Brand",
+    title: "Luxury Brand Gala",
+    rightLabel: "Luxury Brand",
+    background:
+      "https://images.pexels.com/photos/34362959/pexels-photo-34362959.jpeg?auto=compress&cs=tinysrgb&w=1600",
+  },
+  {
+    leftLabel: "Innovate Co.",
+    title: "Product Launch Spectacular",
+    rightLabel: "Innovate Co.",
+    background:
+      "https://images.pexels.com/photos/14999408/pexels-photo-14999408.jpeg?auto=compress&cs=tinysrgb&w=1600",
+  },
+  {
+    leftLabel: "Industry Assoc.",
+    title: "Annual Awards Night",
+    rightLabel: "Industry Assoc.",
+    background:
+      "https://images.pexels.com/photos/19793934/pexels-photo-19793934.jpeg?auto=compress&cs=tinysrgb&w=1600",
+  },
+  {
+    leftLabel: "Global Corp.",
+    title: "Corporate Retreat",
+    rightLabel: "Global Corp.",
+    background:
+      "https://images.pexels.com/photos/7108958/pexels-photo-7108958.jpeg?auto=compress&cs=tinysrgb&w=1600",
+  },
+  {
+    leftLabel: "Charity Org.",
+    title: "Charity Fundraiser",
+    rightLabel: "Charity Org.",
+    background:
+      "https://images.pexels.com/photos/6994994/pexels-photo-6994994.jpeg?auto=compress&cs=tinysrgb&w=1600",
+  },
+];
+
+export default function PortfolioIntro() {
+  return (
+    <section id="portfolio-intro" className="mt-24">
+      <style>{`
+        @media (max-width: 768px) {
+          .full-screen-scroll-fx .section-label {
+            display: none !important;
+          }
+          .full-screen-scroll-fx .section-title {
+            font-size: clamp(1.5rem, 7vw, 3rem) !important;
+            padding: 0 1.5rem !important;
+            text-align: center !important;
+            word-wrap: break-word !important;
+            hyphens: auto !important;
+            line-height: 1.2 !important;
+          }
+          .full-screen-scroll-fx .header-text {
+            font-size: clamp(1.5rem, 7vw, 2.5rem) !important;
+            padding: 0 1rem !important;
+            line-height: 1.3 !important;
+          }
+          .full-screen-scroll-fx .header-subtext {
+            font-size: clamp(0.875rem, 4vw, 1.125rem) !important;
+          }
+        }
+      `}</style>
+      <FullScreenScrollFX
+        sections={sections}
+        header={
+          <>
+            <div className="header-text">Our Portfolio</div>
+            <div
+              className="header-subtext"
+              style={{ fontSize: 18, fontWeight: 400, textTransform: "none" }}
+            ></div>
+          </>
+        }
+        footer={<div />}
+        showProgress
+        durations={{ change: 0.7, snap: 800 }}
+      />
+    </section>
+  );
+}

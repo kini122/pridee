@@ -2,9 +2,6 @@ import ScrollProgress from "@/components/pride/ScrollProgress";
 import ScrollToTop from "@/components/pride/ScrollToTop";
 import Hero from "@/components/pride/Hero";
 import Services from "@/components/pride/Services";
-import PortfolioHorizontal from "@/components/pride/PortfolioHorizontal";
-import Testimonials from "@/components/pride/Testimonials";
-import Stats from "@/components/pride/Stats";
 import ProcessTimeline from "@/components/pride/ProcessTimeline";
 import CTA from "@/components/pride/CTA";
 import LogosMarquee from "@/components/pride/LogosMarquee";
@@ -18,9 +15,6 @@ export default function Index() {
       <CardNav />
       <Hero />
       <Services />
-      <PortfolioHorizontal />
-      <Testimonials />
-      <Stats />
       <ProcessTimeline />
       <CTA />
       <LogosMarquee />
